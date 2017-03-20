@@ -121,12 +121,15 @@ public abstract class GPSEngine {
   private void addBasedOnStrategy(final SearchStrategy strategy,
                                   final Deque<GPSNode> open,
                                   final GPSNode newNode) {
-    if (strategy ==  BFS) {
-      // Add to the back of the deque => consume later
-      open.offerLast(newNode);
-    } else { // DFS
-      // Add to the front of the deque => consume right away
-      open.offerFirst(newNode);
+    switch (strategy) {
+      case BFS:
+        // Add to the back of the deque => consume later
+        open.offerLast(newNode);
+        break;
+      case DFS:
+        // Add to the front of the deque => consume right away
+        open.offerFirst(newNode);
+        break;
     }
   }
 
