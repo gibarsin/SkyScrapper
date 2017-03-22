@@ -1,6 +1,7 @@
 package ar.edu.itba.sia.ui;
 
 import ar.edu.itba.sia.game.Border;
+import java.util.Objects;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -53,6 +54,7 @@ public class BoardPane extends GridPane {
   }
 
   public void changeBorderValue(final Border border, final int index, final int value) {
+    Objects.requireNonNull(border);
     if (index < 0 || index >= size) {
       throw new IllegalArgumentException("Index must be between 0 and " + (size - 1));
     }
@@ -77,7 +79,7 @@ public class BoardPane extends GridPane {
         break;
 
       default:
-        throw new IllegalArgumentException("Invalid border");
+        throw new IllegalStateException("Missing enum case");
     }
 
     changePaneValue((Pane) this.getChildren().get(gridPosition), value);

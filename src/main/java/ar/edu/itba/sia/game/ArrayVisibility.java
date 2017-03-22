@@ -4,60 +4,59 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class ArrayVisibility implements Visibility {
-  private final int[] up;
-  private final int[] down;
+  private final int[] top;
+  private final int[] bottom;
   private final int[] left;
   private final int[] right;
 
-  private ArrayVisibility(final int[] up, final int[] down, final int[] left, final int[] right) {
-    this.up = up;
-    this.down = down;
+  private ArrayVisibility(final int[] top, final int[] bottom, final int[] left,
+                          final int[] right) {
+    this.top = top;
+    this.bottom = bottom;
     this.left = left;
     this.right = right;
   }
 
   public class Builder {
-    private final int[] up;
-    private final int[] down;
+    private final int[] top;
+    private final int[] bottom;
     private final int[] left;
     private final int[] right;
 
     public Builder(final int n) {
-      this.up = new int[n];
-      this.down = new int[n];
+      this.top = new int[n];
+      this.bottom = new int[n];
       this.left = new int[n];
       this.right = new int[n];
     }
 
-    public Builder(final int n, final int[] up, final int[] down, final int[] left,
+    public Builder(final int n, final int[] top, final int[] bottom, final int[] left,
                    final int[] right) {
-      Objects.requireNonNull(up);
-      Objects.requireNonNull(down);
-      Objects.requireNonNull(left);
-      Objects.requireNonNull(right);
-      if (up.length != n || down.length != n || left.length != n || right.length != n) {
-        throw new IllegalArgumentException("Arrays size must be " + n);
+      if (!validArray(n, top) || !validArray(n, bottom) || !validArray(n, left)
+          || !validArray(n, right)) {
+        throw new IllegalArgumentException("Invalid initial values");
       }
 
-      this.up = Arrays.copyOf(up, up.length);
-      this.down = Arrays.copyOf(down, down.length);
+      this.top = Arrays.copyOf(top, top.length);
+      this.bottom = Arrays.copyOf(bottom, bottom.length);
       this.left = Arrays.copyOf(left, left.length);
       this.right = Arrays.copyOf(right, right.length);
     }
 
     public Builder withValue(final Border border, final int position, final int value) {
-      if (value < 1 || value > up.length) {
-        throw new IllegalArgumentException("Value must be between 1 and " + up.length);
+      Objects.requireNonNull(border);
+      if (value < 0 || value > top.length) {
+        throw new IllegalArgumentException("Value must be between 0 and " + top.length);
       }
 
       int[] array;
       switch (border) {
         case TOP:
-          array = up;
+          array = top;
           break;
 
         case BOTTOM:
-          array = down;
+          array = bottom;
           break;
 
         case LEFT:
@@ -69,7 +68,7 @@ public class ArrayVisibility implements Visibility {
           break;
 
         default:
-          throw new IllegalArgumentException("Invalid border");
+          throw new IllegalStateException("Missing enum case");
       }
 
       array[position] = value;
@@ -78,7 +77,7 @@ public class ArrayVisibility implements Visibility {
     }
 
     public ArrayVisibility build() {
-      return new ArrayVisibility(up, down, left, right);
+      return new ArrayVisibility(top, bottom, left, right);
     }
   }
 
@@ -89,11 +88,11 @@ public class ArrayVisibility implements Visibility {
     int[] array;
     switch (border) {
       case TOP:
-        array = up;
+        array = top;
         break;
 
       case BOTTOM:
-        array = down;
+        array = bottom;
         break;
 
       case LEFT:
@@ -105,9 +104,25 @@ public class ArrayVisibility implements Visibility {
         break;
 
       default:
-        throw new IllegalArgumentException("Invalid border");
+        throw new IllegalStateException("Missing enum case");
     }
 
     return array[position];
+  }
+
+  private static boolean validArray(final int n, final int[] array) {
+    Objects.requireNonNull(array);
+
+    if (array.length != n) {
+      return false;
+    }
+
+    for (int value : array) {
+      if (value < 0 || value > n) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
