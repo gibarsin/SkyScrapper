@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 
-public class BoardPane extends GridPane {
+public class SkyscraperBoardPane extends GridPane {
   private static final int PADDING_SIZE = 1;
 
   private static final String BACKGROUND_COLOR = "#F3F3F3";
@@ -22,7 +22,7 @@ public class BoardPane extends GridPane {
 
   private final int size;
 
-  public BoardPane(final int size) {
+  public SkyscraperBoardPane(final int size) {
     this.size = size;
 
     this.setStyle("-fx-background-color:" + BACKGROUND_COLOR + ";");

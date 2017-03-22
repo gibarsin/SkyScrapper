@@ -113,16 +113,7 @@ public class ArrayVisibility implements Visibility {
   private static boolean validArray(final int n, final int[] array) {
     Objects.requireNonNull(array);
 
-    if (array.length != n) {
-      return false;
-    }
-
-    for (int value : array) {
-      if (value < 0 || value > n) {
-        return false;
-      }
-    }
-
-    return true;
+    return array.length == n
+        && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
   }
 }

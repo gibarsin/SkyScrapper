@@ -21,8 +21,8 @@ public class Main extends Application {
     primaryStage.setOnCloseRequest(event -> System.exit(0));
 
     ScrollPane primaryPane = new ScrollPane();
-    BoardPane boardPane = new BoardPane(BOARD_SIZE);
-    primaryPane.setContent(boardPane);
+    SkyscraperBoardPane skyscraperBoardPane = new SkyscraperBoardPane(BOARD_SIZE);
+    primaryPane.setContent(skyscraperBoardPane);
 
     Scene primaryScene = new Scene(primaryPane);
     primaryStage.setScene(primaryScene);
