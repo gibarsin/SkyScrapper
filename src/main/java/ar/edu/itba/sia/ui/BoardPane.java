@@ -32,9 +32,8 @@ public class BoardPane extends GridPane {
       for (int j = 0; j < size + 2; j++) {
         if (i >= 1 && i <= size && j >= 1 && j <= size) {
           this.add(newTilePane(), j, i);
-        } else if ((i == 0 && j > 0 && j < size + 1)
-            || (i > 0 && i < size + 1 && (j == 0 || j == size + 1))
-            || (i == size + 1 && j > 0 && j < size + 1)) {
+        } else if ((i > 0 && i < size + 1 && (j == 0 || j == size + 1))
+            || ((i == size + 1 || i == 0) && (j > 0 && j < size + 1))) {
           this.add(newBorderPane(), j, i);
         }
       }
