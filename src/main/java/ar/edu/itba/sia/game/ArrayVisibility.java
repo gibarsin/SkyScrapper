@@ -9,7 +9,7 @@ public class ArrayVisibility implements Visibility {
   private final int[] left;
   private final int[] right;
 
-  private ArrayVisibility(int[] up, int[] down, int[] left, int[] right) {
+  private ArrayVisibility(final int[] up, final int[] down, final int[] left, final int[] right) {
     this.up = up;
     this.down = down;
     this.left = left;
@@ -22,14 +22,15 @@ public class ArrayVisibility implements Visibility {
     private final int[] left;
     private final int[] right;
 
-    public Builder(int n) {
+    public Builder(final int n) {
       this.up = new int[n];
       this.down = new int[n];
       this.left = new int[n];
       this.right = new int[n];
     }
 
-    public Builder(int n, int[] up, int[] down, int[] left, int[] right) {
+    public Builder(final int n, final int[] up, final int[] down, final int[] left,
+                   final int[] right) {
       Objects.requireNonNull(up);
       Objects.requireNonNull(down);
       Objects.requireNonNull(left);
@@ -44,27 +45,31 @@ public class ArrayVisibility implements Visibility {
       this.right = Arrays.copyOf(right, right.length);
     }
 
-    public Builder withValue(Border border, int position, int value) {
-      Objects.requireNonNull(border);
+    public Builder withValue(final Border border, final int position, final int value) {
       if (value < 1 || value > up.length) {
         throw new IllegalArgumentException("Value must be between 1 and " + up.length);
       }
 
-      int[] array = null;
-
+      int[] array;
       switch (border) {
         case TOP:
           array = up;
           break;
+
         case BOTTOM:
           array = down;
           break;
+
         case LEFT:
           array = left;
           break;
+
         case RIGHT:
           array = right;
           break;
+
+        default:
+          throw new IllegalArgumentException("Invalid border");
       }
 
       array[position] = value;
@@ -78,22 +83,31 @@ public class ArrayVisibility implements Visibility {
   }
 
   @Override
-  public int getVisibility(Border border, int position) {
+  public int getVisibility(final Border border, final int position) {
     Objects.requireNonNull(border);
 
-    int[] array = null;
-
+    int[] array;
     switch (border) {
       case TOP:
-        return up[position];
+        array = up;
+        break;
+
       case BOTTOM:
-        return down[position];
+        array = down;
+        break;
+
       case LEFT:
-        return left[position];
+        array = left;
+        break;
+
       case RIGHT:
-        return right[position];
+        array = right;
+        break;
+
+      default:
+        throw new IllegalArgumentException("Invalid border");
     }
 
-    throw new IllegalStateException("Missing switch case");
+    return array[position];
   }
 }
