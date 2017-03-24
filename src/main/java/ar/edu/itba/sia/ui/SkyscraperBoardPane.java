@@ -5,6 +5,7 @@ import java.util.Objects;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
@@ -17,8 +18,8 @@ public class SkyscraperBoardPane extends GridPane {
   private static final Paint BACKGROUND_PAINT = Paint.valueOf(BACKGROUND_COLOR);
 
   private static final int TILE_SIZE = 30;
-  private static final Paint TILE_BG_PAINT = Paint.valueOf("FFFFFF");
-  private static final Paint TILE_FG_PAINT = Paint.valueOf("000000");
+  private static final Paint TILE_BG_PAINT = Color.WHITE;
+  private static final Paint TILE_FG_PAINT = Color.BLACK;
 
   private final int size;
 
