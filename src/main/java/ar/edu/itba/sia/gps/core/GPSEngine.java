@@ -3,11 +3,7 @@ package ar.edu.itba.sia.gps.core;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
-import ar.edu.itba.sia.gps.exception.NotApplicableException;
-
 import java.util.*;
-
-import static ar.edu.itba.sia.gps.core.SearchStrategy.BFS;
 
 public abstract class GPSEngine {
   // Will always be consumed from the beginning
@@ -71,15 +67,14 @@ public abstract class GPSEngine {
     updateBestCostState(node);
     // TODO: test if forEach is applicable here
     for (final GPSRule rule : problem.getRules()) {
-      final GPSState newState = getNewStateBasedOn(rule, node.getState());
-      if (newState == null) {
-        continue;
+      final Optional<GPSState> newState = getNewStateBasedOn(rule, node.getState());
+      if (newState.isPresent()) {
+        final int newCost = getNewCost(node, rule);
+        // TODO: can we change this code to initialize node's parent in the constructor?
+        final GPSNode newNode = new GPSNode(newState.get(), newCost);
+        newNode.setParent(node);
+        addBasedOnStrategy(strategy, this.openNodes, newNode);
       }
-      final int newCost = getNewCost(node, rule);
-      // TODO: can we change this code to initialize node's parent in the constructor?
-      final GPSNode newNode = new GPSNode(newState, newCost);
-      newNode.setParent(node);
-      addBasedOnStrategy(strategy, this.openNodes, newNode);
     }
   }
 
@@ -93,13 +88,8 @@ public abstract class GPSEngine {
    * @param state The state to which the given rule will be applied
    * @return The new GPSState if the current rule is applicable to the current state; null otherwise
    */
-  private GPSState getNewStateBasedOn(final GPSRule rule, final GPSState state) {
-    // This is done this way as the Exception is declared in the interface
-    try {
+  private Optional<GPSState> getNewStateBasedOn(final GPSRule rule, final GPSState state) {
       return rule.evalRule(state);
-    } catch (NotApplicableException e) {
-      return null;
-    }
   }
 
   private void incrementExplosionCounter() {
