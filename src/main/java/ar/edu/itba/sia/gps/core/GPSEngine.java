@@ -1,19 +1,34 @@
 package ar.edu.itba.sia.gps.core;
 
 import ar.edu.itba.sia.gps.api.GPSProblem;
-import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
+import ar.edu.itba.sia.gps.api.SearchStrategyInterface;
+import ar.edu.itba.sia.gps.strategy.implementation.ASTARSearchStrategy;
+import ar.edu.itba.sia.gps.strategy.implementation.BFSSearchStrategy;
+import ar.edu.itba.sia.gps.strategy.implementation.DFSSearchStrategy;
+import ar.edu.itba.sia.gps.strategy.implementation.GREEDYSearchStrategy;
+import ar.edu.itba.sia.gps.strategy.implementation.IDDFSSearchStrategy;
+import ar.edu.itba.sia.gps.strategy.SearchStrategy;
+import ar.edu.itba.sia.gps.strategy.SearchStrategyManager;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Queue;
 
 public class GPSEngine {
+  private final GPSProblem problem;
+  private final SearchStrategy strategy;
   // Will always be consumed from the beginning
-  private Deque<GPSNode> openNodes;
-  private Map<GPSState, Integer> bestCostsPerState;
+  private final Deque<GPSNode> openNodes;
+  private final Map<GPSState, Integer> bestCostsPerState;
+  private final SearchStrategyManager searchStrategy;
   private long explosionCounter;
+
+  // Necessary because @apierri added them to: https://github.com/apierri/GeneralProblemSolver
+  private boolean finished;
+  private boolean failed;
+  private GPSNode solutionNode;
 
   /**
    *
@@ -22,31 +37,51 @@ public class GPSEngine {
    * @implNote {@code strategy} will be used to determine the order in which the nodes
    *           to be expanded are going to be add into the openNodes deque
    */
-  public void engine(final GPSProblem problem, final SearchStrategy strategy) {
+  public GPSEngine(final GPSProblem problem, final SearchStrategy strategy) {
+    this.problem = problem;
+    this.strategy = strategy;
+    this.searchStrategy = initSearchStrategyManager(strategy);
     this.openNodes = new LinkedList<>();
     this.bestCostsPerState = new HashMap<>();
     this.explosionCounter = 0;
-
-    final GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
-    // As the deque is empty, it is the same to add the root element first or last
-    this.openNodes.offerFirst(rootNode);
-
-    GPSSolution solNode = null;
-    while (!openNodes.isEmpty() && solNode == null) {
-      // Consume always the first item of the deque
-      final GPSNode currentNode = openNodes.pollFirst();
-      if (problem.isGoal(currentNode.getState())) {
-        solNode = new GPSSolution(currentNode.getSolution(),
-                explosionCounter, currentNode.getCost());
-      } else if (nodeShouldBeExploded(currentNode)){
-        explode(currentNode, strategy, problem);
-      }
-    }
-
-    printSolution(solNode);
+    this.finished = false;
+    this.failed = false;
+    this.solutionNode = null;
   }
 
-  private void printSolution(final GPSSolution solNode) {
+  private SearchStrategyManager initSearchStrategyManager(final SearchStrategy strategy) {
+    final SearchStrategyManager ss = new SearchStrategyManager();
+    ss.setStrategy(chooseStrategy(strategy));
+    return ss;
+  }
+
+  private SearchStrategyInterface chooseStrategy(final SearchStrategy strategy) {
+    switch (strategy) {
+      case BFS:
+        return new BFSSearchStrategy();
+      case DFS:
+        return new DFSSearchStrategy(Long.MAX_VALUE);
+      case IDDFS:
+        return new IDDFSSearchStrategy();
+      case GREEDY:
+        return new GREEDYSearchStrategy(problem::getHValue);
+      case ASTAR:
+        return new ASTARSearchStrategy(problem::getHValue);
+      default:
+        throw new IllegalStateException();
+    }
+  }
+
+  public void findSolution() {
+    final GPSSolutionNode gpsSolutionNode = searchStrategy.findSolution(problem, openNodes);
+    solutionNode = gpsSolutionNode.getSolutionNode();
+    finished = true;
+    failed = solutionNode == null;
+    explosionCounter = gpsSolutionNode.getExplodedNodes();
+    printSolution(gpsSolutionNode);
+  }
+
+  private void printSolution(final GPSSolutionNode solNode) {
     if (solNode == null) {
       System.err.println("[FAILED] - solution not found!");
     } else {
@@ -57,97 +92,37 @@ public class GPSEngine {
     }
   }
 
-  private boolean nodeShouldBeExploded(final GPSNode node) {
-    final Integer bestCostState = bestCostsPerState.get(node.getState());
-    // Explode current node only if the current state hasn't already been reached or it has been
-    // reached but with a higher cost
-    return bestCostState == null || bestCostState > node.getCost();
+  // Code added by @apierri
+
+  public Queue<GPSNode> getOpen() {
+    return openNodes;
   }
 
-  private void explode(final GPSNode node,
-                       final SearchStrategy strategy,
-                       final GPSProblem problem) {
-    incrementExplosionCounter();
-    updateBestCostState(node);
-    // TODO: test if forEach is applicable here
-    for (final GPSRule rule : problem.getRules()) {
-      final Optional<GPSState> newState = getNewStateBasedOn(rule, node.getState());
-      if (newState.isPresent()) {
-        final int newCost = getNewCost(node, rule);
-        // TODO: can we change this code to initialize node's parent in the constructor?
-        final GPSNode newNode = new GPSNode(newState.get(), newCost);
-        newNode.setParent(node);
-        addBasedOnStrategy(strategy, this.openNodes, newNode);
-      }
-    }
+  public Map<GPSState, Integer> getBestCosts() {
+    return new HashMap<>(bestCostsPerState);
   }
 
-  private int getNewCost(final GPSNode node, final GPSRule rule) {
-    return node.getCost() + rule.getCost();
+  public GPSProblem getProblem() {
+    return problem;
   }
 
-  /**
-   *
-   * @param rule The rule to be applied to the given state to get the new one
-   * @param state The state to which the given rule will be applied
-   * @return The new GPSState if the current rule is applicable to the current state; null otherwise
-   */
-  private Optional<GPSState> getNewStateBasedOn(final GPSRule rule, final GPSState state) {
-      return rule.evalRule(state);
+  public long getExplosionCounter() {
+    return explosionCounter;
   }
 
-  private void incrementExplosionCounter() {
-    this.explosionCounter ++;
+  public boolean isFinished() {
+    return finished;
   }
 
-  private void updateBestCostState(GPSNode node) {
-    this.bestCostsPerState.put(node.getState(), node.getCost());
+  public boolean isFailed() {
+    return failed;
   }
 
-  /**
-   *
-   * @param strategy The search strategy being used
-   * @param open The deque with openNodes nodes
-   * @param newNode The new node to be inserted into the openNodes deque
-   * @implNote The only difference between BFS and DFS is where the items are added to the deque
-   *           as they are always consumed from the beginning
-   */
-  private void addBasedOnStrategy(final SearchStrategy strategy,
-                                  final Deque<GPSNode> open,
-                                  final GPSNode newNode) {
-    switch (strategy) {
-      case BFS:
-        // Add to the back of the deque => consume later
-        open.offerLast(newNode);
-        break;
-      case DFS:
-        // Add to the front of the deque => consume right away
-        open.offerFirst(newNode);
-        break;
-    }
+  public GPSNode getSolutionNode() {
+    return solutionNode;
   }
 
-  private static class GPSSolution {
-    private final String solution;
-    private final long explodedNodes;
-    private final int cost;
-
-    private GPSSolution(final String solution, final long explodedNodes, final int cost) {
-      this.solution = solution;
-      this.explodedNodes = explodedNodes;
-      this.cost = cost;
-    }
-
-    private String getSolution() {
-      return solution;
-    }
-
-    private long getExplodedNodes() {
-      return explodedNodes;
-    }
-
-    private int getCost() {
-      return cost;
-    }
+  public SearchStrategy getStrategy() {
+    return strategy;
   }
 }

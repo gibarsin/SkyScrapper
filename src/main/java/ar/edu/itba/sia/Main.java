@@ -9,7 +9,7 @@ import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.core.GPSEngine;
-import ar.edu.itba.sia.gps.core.SearchStrategy;
+import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class Main {
     final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
     final List<GPSRule> rules = getRules(matrix.length);
     final GPSProblem problem = new SkyscraperProblem(board, rules);
-    final GPSEngine engine = new GPSEngine();
-    engine.engine(problem, SearchStrategy.DFS);
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+    engine.findSolution();
 
 //    Application.launch(SkyscraperUI.class, args);
   }
