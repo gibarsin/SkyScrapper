@@ -114,4 +114,42 @@ public class ArrayVisibility implements Visibility {
     return Objects.requireNonNull(array).length == n
         && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ArrayVisibility that = (ArrayVisibility) o;
+
+    if (!Arrays.equals(top, that.top)) {
+      return false;
+    }
+
+    if (!Arrays.equals(bottom, that.bottom)) {
+      return false;
+    }
+
+    if (!Arrays.equals(left, that.left)) {
+      return false;
+    }
+
+    return Arrays.equals(right, that.right);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Arrays.hashCode(top);
+
+    result = 31 * result + Arrays.hashCode(bottom);
+    result = 31 * result + Arrays.hashCode(left);
+    result = 31 * result + Arrays.hashCode(right);
+
+    return result;
+  }
 }
