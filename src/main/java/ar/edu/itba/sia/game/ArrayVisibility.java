@@ -12,10 +12,10 @@ public class ArrayVisibility implements Visibility {
 
   private ArrayVisibility(final int[] top, final int[] bottom, final int[] left,
       final int[] right) {
-    this.top = top;
-    this.bottom = bottom;
-    this.left = left;
-    this.right = right;
+    this.top = Objects.requireNonNull(top);
+    this.bottom = Objects.requireNonNull(bottom);
+    this.left = Objects.requireNonNull(left);
+    this.right = Objects.requireNonNull(right);
   }
 
   private static boolean validArray(final int n, final int[] array) {
