@@ -5,7 +5,7 @@ public interface Integer2DBoard {
 
   int getValue(final int row, final int column);
 
-  void setValue(final int row, final int column, final int value);
+  Integer2DBoard setValue(final int row, final int column, final int value);
 
   boolean isEmpty(final int row, final int column);
 

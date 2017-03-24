@@ -1,15 +1,23 @@
 package ar.edu.itba.sia.game;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class SkyscraperBoard implements Integer2DBoard, Visibility {
 
   private final ArrayVisibility visibility;
   private final int[][] matrix;
 
-  public SkyscraperBoard(final int n, final ArrayVisibility visibility) {
-    this.visibility = visibility;
-    this.matrix = new int[n][n];
+  public SkyscraperBoard(final int[][] matrix, final ArrayVisibility visibility) {
+    this.visibility = Objects.requireNonNull(visibility);
+    final int rowsLength = Objects.requireNonNull(matrix).length;
+    for (int i = 0 ; i < rowsLength ; i++) {
+      if (matrix[i].length != rowsLength) {
+        throw new IllegalArgumentException("Matrix should be square");
+      }
+    }
+    this.matrix = matrix;
   }
 
   @Override
@@ -23,8 +31,11 @@ public class SkyscraperBoard implements Integer2DBoard, Visibility {
   }
 
   @Override
-  public void setValue(final int row, final int column, final int value) {
-    matrix[row][column] = value;
+  public Integer2DBoard setValue(final int row, final int column, final int value) {
+    final int[][] newMatrix = new int[matrix.length][];
+    IntStream.range(0, matrix.length).parallel().forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
+    newMatrix[row][column] = value;
+    return new SkyscraperBoard(newMatrix, visibility);
   }
 
   @Override
