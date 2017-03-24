@@ -6,10 +6,10 @@ import java.util.stream.IntStream;
 
 public class SkyscraperBoard implements Integer2DBoard, Visibility {
 
-  private final ArrayVisibility visibility;
+  private final Visibility visibility;
   private final int[][] matrix;
 
-  public SkyscraperBoard(final int[][] matrix, final ArrayVisibility visibility) {
+  public SkyscraperBoard(final int[][] matrix, final Visibility visibility) {
     this.visibility = Objects.requireNonNull(visibility);
     final int rowsLength = Objects.requireNonNull(matrix).length;
     for (int i = 0 ; i < rowsLength ; i++) {
@@ -41,6 +41,11 @@ public class SkyscraperBoard implements Integer2DBoard, Visibility {
   @Override
   public boolean isEmpty(final int row, final int column) {
     return matrix[row][column] == 0;
+  }
+
+  @Override
+  public boolean hasVisibility(final Border border, final int position) {
+    return visibility.hasVisibility(border, position);
   }
 
   @Override

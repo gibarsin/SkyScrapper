@@ -39,4 +39,8 @@ public class SkyscraperState implements GPSState {
   public int hashCode() {
     return board.hashCode();
   }
+
+  public SkyscraperBoard getBoard() {
+    return board;
+  }
 }

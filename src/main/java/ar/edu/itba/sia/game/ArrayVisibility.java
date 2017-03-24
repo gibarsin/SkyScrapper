@@ -4,20 +4,99 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class ArrayVisibility implements Visibility {
+
   private final int[] top;
   private final int[] bottom;
   private final int[] left;
   private final int[] right;
 
   private ArrayVisibility(final int[] top, final int[] bottom, final int[] left,
-                          final int[] right) {
+      final int[] right) {
     this.top = top;
     this.bottom = bottom;
     this.left = left;
     this.right = right;
   }
 
-  public class Builder {
+  private static boolean validArray(final int n, final int[] array) {
+    return Objects.requireNonNull(array).length == n
+        && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
+  }
+
+  @Override
+  public boolean hasVisibility(final Border border, final int position) {
+    return getVisibility(border, position) != 0;
+  }
+
+  @Override
+  public int getVisibility(final Border border, final int position) {
+    Objects.requireNonNull(border);
+
+    int[] array;
+    switch (border) {
+      case TOP:
+        array = top;
+        break;
+
+      case BOTTOM:
+        array = bottom;
+        break;
+
+      case LEFT:
+        array = left;
+        break;
+
+      case RIGHT:
+        array = right;
+        break;
+
+      default:
+        throw new IllegalStateException("Missing enum case");
+    }
+
+    return array[position];
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ArrayVisibility that = (ArrayVisibility) o;
+
+    if (!Arrays.equals(top, that.top)) {
+      return false;
+    }
+
+    if (!Arrays.equals(bottom, that.bottom)) {
+      return false;
+    }
+
+    if (!Arrays.equals(left, that.left)) {
+      return false;
+    }
+
+    return Arrays.equals(right, that.right);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Arrays.hashCode(top);
+
+    result = 31 * result + Arrays.hashCode(bottom);
+    result = 31 * result + Arrays.hashCode(left);
+    result = 31 * result + Arrays.hashCode(right);
+
+    return result;
+  }
+
+  public static class Builder {
+
     private final int[] top;
     private final int[] bottom;
     private final int[] left;
@@ -31,7 +110,7 @@ public class ArrayVisibility implements Visibility {
     }
 
     public Builder(final int n, final int[] top, final int[] bottom, final int[] left,
-                   final int[] right) {
+        final int[] right) {
       if (!validArray(n, top) || !validArray(n, bottom) || !validArray(n, left)
           || !validArray(n, right)) {
         throw new IllegalArgumentException("Invalid initial values");
@@ -79,77 +158,5 @@ public class ArrayVisibility implements Visibility {
     public ArrayVisibility build() {
       return new ArrayVisibility(top, bottom, left, right);
     }
-  }
-
-  @Override
-  public int getVisibility(final Border border, final int position) {
-    Objects.requireNonNull(border);
-
-    int[] array;
-    switch (border) {
-      case TOP:
-        array = top;
-        break;
-
-      case BOTTOM:
-        array = bottom;
-        break;
-
-      case LEFT:
-        array = left;
-        break;
-
-      case RIGHT:
-        array = right;
-        break;
-
-      default:
-        throw new IllegalStateException("Missing enum case");
-    }
-
-    return array[position];
-  }
-
-  private static boolean validArray(final int n, final int[] array) {
-    return Objects.requireNonNull(array).length == n
-        && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ArrayVisibility that = (ArrayVisibility) o;
-
-    if (!Arrays.equals(top, that.top)) {
-      return false;
-    }
-
-    if (!Arrays.equals(bottom, that.bottom)) {
-      return false;
-    }
-
-    if (!Arrays.equals(left, that.left)) {
-      return false;
-    }
-
-    return Arrays.equals(right, that.right);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = Arrays.hashCode(top);
-
-    result = 31 * result + Arrays.hashCode(bottom);
-    result = 31 * result + Arrays.hashCode(left);
-    result = 31 * result + Arrays.hashCode(right);
-
-    return result;
   }
 }
