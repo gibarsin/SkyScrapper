@@ -10,9 +10,11 @@ import java.util.stream.IntStream;
 public class SkyscraperProblem implements GPSProblem {
 
   private final SkyscraperState initialState;
+  private final List<GPSRule> rules;
 
-  public SkyscraperProblem(final SkyscraperBoard initialBoard) {
+  public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules) {
     this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
+    this.rules = rules;
   }
 
   @Override
@@ -29,7 +31,7 @@ public class SkyscraperProblem implements GPSProblem {
   }
 
   private boolean areVisibilityConflicts(final SkyscraperBoard board) {
-    return IntStream.range(0, board.getSize() - 1).parallel() // TODO Test
+    return IntStream.range(0, board.getSize()).parallel() // TODO Test
         .anyMatch(v -> !hasCorrectRowVisibility(board, v) || !hasCorrectColumnVisibility(board, v));
   }
 
@@ -137,7 +139,7 @@ public class SkyscraperProblem implements GPSProblem {
 
   @Override
   public List<GPSRule> getRules() {
-    return null;
+    return rules;
   }
 
   @Override

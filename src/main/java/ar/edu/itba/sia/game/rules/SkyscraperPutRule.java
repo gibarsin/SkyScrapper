@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Put implements GPSRule {
+public class SkyscraperPutRule implements GPSRule {
 
   final private static int COST= 1;
-  final private static String NAME = "Put";
+  final private static String NAME = "PUT";
 
   @Override
   public Integer getCost() {
@@ -42,7 +42,7 @@ public class Put implements GPSRule {
 
     for(int i=0; i<size && !found; i++){
       for(int j=0; j<size && !found; j++){
-        if(board.isEmpty(i, j)){
+        if(board.isEmpty(i, j)) {
           newBoard = setValue(board, i, j);
           if(newBoard != null){
             found = true;
@@ -53,6 +53,7 @@ public class Put implements GPSRule {
 
     if(found){
       newState = new SkyscraperState(newBoard);
+      newBoard.print();
     }
     return Optional.ofNullable(newState);
   }
@@ -66,12 +67,11 @@ public class Put implements GPSRule {
    */
   private SkyscraperBoard setValue(final SkyscraperBoard board, final int row, final int col) {
 
-    List<Integer> numbers = IntStream.range(1, board.getSize()).boxed().collect(Collectors.toList());
-
+    List<Integer> numbers = IntStream.rangeClosed(1, board.getSize()).boxed().collect(Collectors.toList());
     // Remove the numbers already in use in the same col & row where the new value is inserted
-    for(int i=0; i<board.getSize(); i++){
-      numbers.remove(board.getValue(i, col));
-      numbers.remove(board.getValue(row, i));
+    for(int i=0; i<board.getSize(); i++) {
+      numbers.remove(Integer.valueOf(board.getValue(i, col)));
+      numbers.remove(Integer.valueOf(board.getValue(row, i)));
     }
 
     for(Integer number: numbers) {
@@ -203,7 +203,7 @@ public class Put implements GPSRule {
     }
     for(int i=row-1; i>=0; i--) {
       if( board.getValue(i, col)  > max) {
-        max = board.getValue(col, i);
+        max = board.getValue(i, col);
         count ++;
       }
     }

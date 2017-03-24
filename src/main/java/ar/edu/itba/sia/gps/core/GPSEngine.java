@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class GPSEngine {
+public class GPSEngine {
   // Will always be consumed from the beginning
   private Deque<GPSNode> openNodes;
   private Map<GPSState, Integer> bestCostsPerState;

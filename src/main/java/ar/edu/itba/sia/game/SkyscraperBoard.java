@@ -9,4 +9,5 @@ public interface SkyscraperBoard extends Visibility {
 
   boolean isEmpty(final int row, final int column);
 
+  void print();
 }

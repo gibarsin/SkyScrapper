@@ -44,6 +44,17 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   }
 
   @Override
+  public void print() {
+    for(int[] rows : matrix) {
+      for(int value : rows) {
+        System.out.print(value + "\t");
+      }
+      System.out.println();
+    }
+    System.out.println("---");
+  }
+
+  @Override
   public boolean hasVisibility(final Border border, final int position) {
     return visibility.hasVisibility(border, position);
   }

@@ -24,7 +24,7 @@ public class SkyscraperProblemTest {
         {0, 0, 0, 0}
     };
     final SkyscraperBoard board = new SkyscraperBoardImpl(emptyMatrix, visibility);
-    final SkyscraperProblem problem = new SkyscraperProblem(board);
+    final SkyscraperProblem problem = new SkyscraperProblem(board, null);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));
   }
@@ -38,7 +38,7 @@ public class SkyscraperProblemTest {
         {3, 4, 1, 2}
     };
     final SkyscraperBoard board = new SkyscraperBoardImpl(answerMatrix, visibility);
-    final SkyscraperProblem problem = new SkyscraperProblem(board);
+    final SkyscraperProblem problem = new SkyscraperProblem(board, null);
 
     Assert.assertTrue(problem.isGoal(problem.getInitState()));
   }
@@ -52,7 +52,7 @@ public class SkyscraperProblemTest {
         {3, 4, 1, 2}
     };
     final SkyscraperBoard board = new SkyscraperBoardImpl(incorrectAnswerMatrix, visibility);
-    final SkyscraperProblem problem = new SkyscraperProblem(board);
+    final SkyscraperProblem problem = new SkyscraperProblem(board, null);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));
   }
