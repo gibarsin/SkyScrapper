@@ -13,7 +13,19 @@ import java.util.stream.IntStream;
 public class SkyscraperPutRule implements GPSRule {
 
   final private static int COST= 1;
-  final private static String NAME = "PUT";
+  final private static String RULE_NAME = "PUT";
+  final private String name;
+
+  final private int row;
+  final private int col;
+  final private int number;
+
+  public SkyscraperPutRule(final int row, final int col, final int number) {
+    this.row = row;
+    this.col = col;
+    this.number = number;
+    this.name = RULE_NAME + row + " " + col + " " + number;
+  }
 
   @Override
   public Integer getCost() {
@@ -22,7 +34,7 @@ public class SkyscraperPutRule implements GPSRule {
 
   @Override
   public String getName() {
-    return NAME;
+    return name;
   }
 
   /**
@@ -37,21 +49,11 @@ public class SkyscraperPutRule implements GPSRule {
     SkyscraperBoard newBoard = null;
     GPSState newState = null;
 
-    int size = board.getSize();
-    boolean found = false;
-
-    for(int i=0; i<size && !found; i++){
-      for(int j=0; j<size && !found; j++){
-        if(board.isEmpty(i, j)) {
-          newBoard = setValue(board, i, j);
-          if(newBoard != null){
-            found = true;
-          }
-        }
-      }
+    if(board.isEmpty(row, col)) {
+      newBoard = setValue(board, row, col, number);
     }
 
-    if(found){
+    if(newBoard != null){
       newState = new SkyscraperState(newBoard);
       newBoard.print();
     }
@@ -65,22 +67,18 @@ public class SkyscraperPutRule implements GPSRule {
    * @param col The col to insert the new value
    * @return A new board with the inserted value or null if the value did not meet the restrictions
    */
-  private SkyscraperBoard setValue(final SkyscraperBoard board, final int row, final int col) {
+  private SkyscraperBoard setValue(final SkyscraperBoard board, final int row, final int col, final int number) {
 
-    List<Integer> numbers = IntStream.rangeClosed(1, board.getSize()).boxed().collect(Collectors.toList());
-    // Remove the numbers already in use in the same col & row where the new value is inserted
     for(int i=0; i<board.getSize(); i++) {
-      numbers.remove(Integer.valueOf(board.getValue(i, col)));
-      numbers.remove(Integer.valueOf(board.getValue(row, i)));
-    }
-
-    for(Integer number: numbers) {
-      if(checkVisibility(board, row, col, number)) {
-        return board.setValue(row, col, number);
+      if(board.getValue(i, col) == number || board.getValue(row, i) == number) {
+        return null;
       }
     }
 
-    return null;
+    if(!checkVisibility(board, row, col, number)) {
+      return null;
+    }
+    return board.setValue(row, col, number);
   }
 
   private boolean checkVisibility(final SkyscraperBoard board, final int row, final int col, final int number) {
