@@ -8,16 +8,43 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
 
   private final Visibility visibility;
   private final int[][] matrix;
+  private final int emptySpaces;
 
   public SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility) {
     this.visibility = Objects.requireNonNull(visibility);
-    final int rowsLength = Objects.requireNonNull(matrix).length;
-    for (int i = 0 ; i < rowsLength ; i++) {
-      if (matrix[i].length != rowsLength) {
+    this.emptySpaces = checkMatrix(matrix);
+    this.matrix = matrix;
+  }
+
+  private SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility, int emptySpaces) {
+    this.visibility = visibility;
+    this.matrix = matrix;
+    this.emptySpaces = emptySpaces;
+  }
+
+  private static int checkMatrix(final int[][] matrix) {
+    final int n = Objects.requireNonNull(matrix).length;
+    int emptySpaces = 0;
+
+    for (int i = 0; i < n; i++) {
+      if (matrix[i].length != n) {
         throw new IllegalArgumentException("Matrix should be square");
       }
+
+      for (int j = 0; j < n; j++) {
+        final int value = matrix[i][j];
+
+        if (value < 0 || value > n) {
+          throw new IllegalArgumentException("Matrix values should be between 0 and " + n);
+        }
+
+        if (matrix[i][j] == 0) {
+          emptySpaces++;
+        }
+      }
     }
-    this.matrix = matrix;
+
+    return emptySpaces;
   }
 
   @Override
@@ -33,9 +60,13 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   @Override
   public SkyscraperBoard setValue(final int row, final int column, final int value) {
     final int[][] newMatrix = new int[matrix.length][];
-    IntStream.range(0, matrix.length).parallel().forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
+    final int newEmptySpaces = isEmpty(row, column) ? emptySpaces - 1 : emptySpaces;
+
+    IntStream.range(0, matrix.length).parallel()
+        .forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
     newMatrix[row][column] = value;
-    return new SkyscraperBoardImpl(newMatrix, visibility);
+
+    return new SkyscraperBoardImpl(newMatrix, visibility, newEmptySpaces);
   }
 
   @Override
@@ -44,14 +75,8 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   }
 
   @Override
-  public void print() {
-    for(int[] rows : matrix) {
-      for(int value : rows) {
-        System.out.print(value + "\t");
-      }
-      System.out.println();
-    }
-    System.out.println("---");
+  public boolean isFull() {
+    return emptySpaces == 0;
   }
 
   @Override
@@ -62,6 +87,21 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   @Override
   public int getVisibility(final Border border, final int position) {
     return visibility.getVisibility(border, position);
+  }
+
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+
+    for (int[] rows : matrix) {
+      for (int value : rows) {
+        sb.append(value).append("\t");
+      }
+      sb.append("\n");
+    }
+    sb.append("---\n");
+
+    return sb.toString();
   }
 
   @Override
@@ -76,11 +116,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
 
     SkyscraperBoardImpl that = (SkyscraperBoardImpl) o;
 
-    if (!visibility.equals(that.visibility)) {
-      return false;
-    }
-
-    return Arrays.deepEquals(matrix, that.matrix);
+    return visibility.equals(that.visibility) && Arrays.deepEquals(matrix, that.matrix);
   }
 
   @Override

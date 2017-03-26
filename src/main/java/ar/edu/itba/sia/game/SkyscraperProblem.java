@@ -27,11 +27,11 @@ public class SkyscraperProblem implements GPSProblem {
     final SkyscraperState ssState = (SkyscraperState) state;
     final SkyscraperBoard board = ssState.getBoard();
 
-    return isFull(board) && !areCrossConflicts(board) && !areVisibilityConflicts(board);
+    return board.isFull() && !areCrossConflicts(board) && !areVisibilityConflicts(board);
   }
 
   private boolean areVisibilityConflicts(final SkyscraperBoard board) {
-    return IntStream.range(0, board.getSize()).parallel() // TODO Test
+    return IntStream.range(0, board.getSize()).parallel()
         .anyMatch(v -> !hasCorrectRowVisibility(board, v) || !hasCorrectColumnVisibility(board, v));
   }
 
@@ -48,7 +48,7 @@ public class SkyscraperProblem implements GPSProblem {
           seen++;
           maxHeight = currValue;
 
-          if(seen > visibility) {
+          if (seen > visibility) {
             return false;
           }
         }
@@ -64,7 +64,7 @@ public class SkyscraperProblem implements GPSProblem {
           seen++;
           maxHeight = currValue;
 
-          if(seen > visibility) {
+          if (seen > visibility) {
             return false;
           }
         }
@@ -87,7 +87,7 @@ public class SkyscraperProblem implements GPSProblem {
           seen++;
           maxHeight = currValue;
 
-          if(seen > visibility) {
+          if (seen > visibility) {
             return false;
           }
         }
@@ -103,21 +103,9 @@ public class SkyscraperProblem implements GPSProblem {
           seen++;
           maxHeight = currValue;
 
-          if(seen > visibility) {
+          if (seen > visibility) {
             return false;
           }
-        }
-      }
-    }
-
-    return true;
-  }
-
-  private boolean isFull(final SkyscraperBoard board) {
-    for (int i = 0; i < board.getSize(); i++) {
-      for (int j = 0; j < board.getSize(); j++) {
-        if (board.isEmpty(i, j)) {
-          return false;
         }
       }
     }
@@ -144,9 +132,7 @@ public class SkyscraperProblem implements GPSProblem {
 
   @Override
   public Integer getHValue(final GPSState state) {
-
     return 1; // TODO: Implement heuristics
-
   }
 
   /**

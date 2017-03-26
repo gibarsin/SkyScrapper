@@ -18,11 +18,6 @@ public class ArrayVisibility implements Visibility {
     this.right = Objects.requireNonNull(right);
   }
 
-  private static boolean validArray(final int n, final int[] array) {
-    return Objects.requireNonNull(array).length == n
-        && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
-  }
-
   @Override
   public boolean hasVisibility(final Border border, final int position) {
     return getVisibility(border, position) != 0;
@@ -31,6 +26,9 @@ public class ArrayVisibility implements Visibility {
   @Override
   public int getVisibility(final Border border, final int position) {
     Objects.requireNonNull(border);
+    if (position < 0 || position >= top.length) {
+      throw new IllegalArgumentException("Position must be between 0 and " + (top.length - 1));
+    }
 
     int[] array;
     switch (border) {
@@ -122,10 +120,18 @@ public class ArrayVisibility implements Visibility {
       this.right = Arrays.copyOf(right, right.length);
     }
 
+    private static boolean validArray(final int n, final int[] array) {
+      return Objects.requireNonNull(array).length == n
+          && Arrays.stream(array).noneMatch(value -> value < 0 || value > n);
+    }
+
     public Builder withValue(final Border border, final int position, final int value) {
       Objects.requireNonNull(border);
       if (value < 0 || value > top.length) {
         throw new IllegalArgumentException("Value must be between 0 and " + top.length);
+      }
+      if (position < 0 || position >= top.length) {
+        throw new IllegalArgumentException("Position must be between 0 and " + (top.length - 1));
       }
 
       int[] array;

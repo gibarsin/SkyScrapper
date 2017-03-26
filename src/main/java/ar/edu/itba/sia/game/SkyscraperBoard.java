@@ -1,6 +1,7 @@
 package ar.edu.itba.sia.game;
 
 public interface SkyscraperBoard extends Visibility {
+
   int getSize();
 
   int getValue(final int row, final int column);
@@ -9,5 +10,5 @@ public interface SkyscraperBoard extends Visibility {
 
   boolean isEmpty(final int row, final int column);
 
-  void print();
+  boolean isFull();
 }

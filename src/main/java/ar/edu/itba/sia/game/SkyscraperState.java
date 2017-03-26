@@ -4,20 +4,11 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import java.util.Objects;
 
 public class SkyscraperState implements GPSState {
+
   private final SkyscraperBoard board;
-  private int emptySpaces;
 
   public SkyscraperState(final SkyscraperBoard board) {
     this.board = Objects.requireNonNull(board);
-    this.emptySpaces = 0;
-
-    for (int i = 0; i < board.getSize(); i++) {
-      for (int j = 0; j < board.getSize(); j++) {
-        if(board.isEmpty(i, j)) {
-          emptySpaces++;
-        }
-      }
-    }
   }
 
   @Override
