@@ -6,9 +6,11 @@ public interface SkyscraperBoard extends Visibility {
 
   int getValue(final int row, final int column);
 
-  SkyscraperBoard setValue(final int row, final int column, final int value);
-
   boolean isEmpty(final int row, final int column);
 
   boolean isFull();
+
+  SkyscraperBoard setValue(final int row, final int column, final int value);
+
+  SkyscraperBoard swapValue(final int row1, final int column1, final int row2, final int column2);
 }

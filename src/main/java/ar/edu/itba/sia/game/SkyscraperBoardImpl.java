@@ -80,6 +80,21 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   }
 
   @Override
+  public SkyscraperBoard swapValue(final int row1, final int column1, final int row2,
+      final int column2) {
+    final int[][] newMatrix = new int[matrix.length][];
+
+    IntStream.range(0, matrix.length).parallel()
+        .forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
+
+    final int aux = newMatrix[row1][column1];
+    newMatrix[row1][column1] = newMatrix[row2][column2];
+    newMatrix[row2][column2] = aux;
+
+    return new SkyscraperBoardImpl(newMatrix, visibility, emptySpaces);
+  }
+
+  @Override
   public boolean hasVisibility(final Border border, final int position) {
     return visibility.hasVisibility(border, position);
   }
