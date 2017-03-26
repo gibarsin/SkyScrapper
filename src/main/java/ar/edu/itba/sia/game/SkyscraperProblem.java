@@ -67,6 +67,9 @@ public class SkyscraperProblem implements GPSProblem {
       }
     }
 
+    maxHeight = 0;
+    seen = 0;
+
     if (board.hasVisibility(Border.RIGHT, row)) {
       final int visibility = board.getVisibility(Border.RIGHT, row);
       for (int j = board.getSize() - 1; j >= 0; j--) {
@@ -105,6 +108,9 @@ public class SkyscraperProblem implements GPSProblem {
         }
       }
     }
+
+    maxHeight = 0;
+    seen = 0;
 
     if (board.hasVisibility(Border.BOTTOM, column)) {
       final int visibility = board.getVisibility(Border.BOTTOM, column);
