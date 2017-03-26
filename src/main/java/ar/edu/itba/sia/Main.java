@@ -26,17 +26,17 @@ public class Main {
 //        {3, 4, 1, 2}
 //    };
     final int[][] matrix = new int[][]{
-        {4, 3, 2, 1},
-        {3, 2, 1, 4},
-        {2, 1, 4, 3},
-        {1, 4, 3, 2}
+        {0, 0, 0, 2},
+        {1, 0, 0, 0},
+        {2, 0, 0, 0},
+        {1, 0, 0, 0}
     };
     final Visibility visibility = new ArrayVisibility.Builder(
-        SIZE,
-        new int[]{1, 2, 2, 3},
-        new int[]{2, 1, 3, 2},
-        new int[]{1, 3, 3, 2},
-        new int[]{4, 2, 1, 2}
+        matrix.length,
+        new int[]{0, 3, 0, 0},
+        new int[]{2, 0, 0, 0},
+        new int[]{0, 0, 0, 0},
+        new int[]{2, 0, 0, 2}
     ).build();
     final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
     final List<GPSRule> rules = getRules(matrix.length);
@@ -47,7 +47,7 @@ public class Main {
 //    Application.launch(SkyscraperUI.class, args);
   }
 
-  private static List<GPSRule> getRules(int size) {
+  public static List<GPSRule> getRules(int size) {
     final List<GPSRule> rules = new ArrayList<>();
 
     for (int i = 0; i < size; i++) {
