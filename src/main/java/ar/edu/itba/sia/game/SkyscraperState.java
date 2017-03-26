@@ -12,6 +12,11 @@ public class SkyscraperState implements GPSState {
   }
 
   @Override
+  public String toString() {
+    return board.toString();
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
