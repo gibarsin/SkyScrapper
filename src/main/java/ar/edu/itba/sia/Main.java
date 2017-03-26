@@ -6,6 +6,7 @@ import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.Visibility;
 import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
+import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.core.GPSEngine;
@@ -53,6 +54,16 @@ public class Main {
       for (int j = 0; j < size; j++) {
         for (int n = 1; n <= size; n++) {
           rules.add(new SkyscraperPutRule(i, j, n));
+        }
+      }
+    }
+
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        for (int k = i; k < size; k++) {
+          for (int l = j + 1; l < size; l++) {
+            rules.add(new SkyscraperSwapRule(i, j, k, l));
+          }
         }
       }
     }
