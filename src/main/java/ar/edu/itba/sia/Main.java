@@ -19,12 +19,12 @@ public class Main {
   private static final int SIZE = 4;
 
   public static void main(String[] args) {
-    final int[][] originalMatrix = new int[][]{
-        {4, 3, 2, 1},
-        {1, 2, 4, 3},
-        {2, 1, 3, 4},
-        {3, 4, 1, 2}
-    };
+//    final int[][] originalMatrix = new int[][]{
+//        {4, 3, 2, 1},
+//        {1, 2, 4, 3},
+//        {2, 1, 3, 4},
+//        {3, 4, 1, 2}
+//    };
     final int[][] matrix = new int[][]{
         {4, 3, 2, 0},
         {1, 0, 4, 0},

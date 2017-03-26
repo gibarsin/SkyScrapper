@@ -13,7 +13,9 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   public SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility) {
     this.visibility = Objects.requireNonNull(visibility);
     this.emptySpaces = checkMatrix(matrix);
-    this.matrix = matrix;
+    this.matrix = new int[matrix.length][];
+    IntStream.range(0, matrix.length).parallel()
+        .forEach(i -> this.matrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
   }
 
   private SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility, int emptySpaces) {
