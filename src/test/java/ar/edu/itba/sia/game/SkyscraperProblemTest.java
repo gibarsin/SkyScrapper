@@ -47,9 +47,9 @@ public class SkyscraperProblemTest {
   public void test003IsGoalForIncorrectMatrixShouldBeFalse() {
     final int[][] incorrectAnswerMatrix = new int[][]{
         {4, 3, 2, 1},
-        {1, 2, 4, 3},
-        {2, 3, 3, 4},
-        {3, 4, 1, 2}
+        {3, 2, 1, 4},
+        {2, 1, 4, 3},
+        {1, 4, 3, 2}
     };
     final SkyscraperBoard board = new SkyscraperBoardImpl(incorrectAnswerMatrix, visibility);
     final SkyscraperProblem problem = new SkyscraperProblem(board, null);

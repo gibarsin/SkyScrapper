@@ -9,14 +9,14 @@ public class SkyscraperState implements GPSState {
   private final SkyscraperBoard board;
   private final Point firstEmptyPosition;
 
+  public SkyscraperState(final SkyscraperBoard board) {
+    this.board = Objects.requireNonNull(board);
+    this.firstEmptyPosition = null;
+  }
+
   public SkyscraperState(final SkyscraperBoard board, final Point firstEmptyPosition) {
     this.board = Objects.requireNonNull(board);
     this.firstEmptyPosition = firstEmptyPosition;
-  }
-
-  @Override
-  public String toString() {
-    return board.toString();
   }
 
   @Override
@@ -53,8 +53,7 @@ public class SkyscraperState implements GPSState {
     return board;
   }
 
-  public Point getFirstEmptyPosition(){
+  public Point getFirstEmptyPosition() {
     return firstEmptyPosition;
   }
-
 }
