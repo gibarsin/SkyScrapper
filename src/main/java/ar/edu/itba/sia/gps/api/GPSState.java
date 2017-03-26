@@ -4,7 +4,6 @@ package ar.edu.itba.sia.gps.api;
  * GPSState interface.
  */
 public interface GPSState {
-
   /**
    * Compares self to another state to determine whether they are the same or not.
    *
