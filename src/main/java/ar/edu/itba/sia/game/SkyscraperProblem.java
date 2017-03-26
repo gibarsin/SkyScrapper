@@ -144,7 +144,9 @@ public class SkyscraperProblem implements GPSProblem {
 
   @Override
   public Integer getHValue(final GPSState state) {
-    return null;
+
+    return 1; // TODO: Implement heuristics
+
   }
 
   /**

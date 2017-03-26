@@ -24,7 +24,7 @@ public class SkyscraperPutRule implements GPSRule {
     this.row = row;
     this.col = col;
     this.number = number;
-    this.name = RULE_NAME + row + " " + col + " " + number;
+    this.name = RULE_NAME + " " + row + " " + col + " " + number;
   }
 
   @Override
@@ -55,7 +55,6 @@ public class SkyscraperPutRule implements GPSRule {
 
     if(newBoard != null){
       newState = new SkyscraperState(newBoard);
-      newBoard.print();
     }
     return Optional.ofNullable(newState);
   }

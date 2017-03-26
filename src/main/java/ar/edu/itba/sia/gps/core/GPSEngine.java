@@ -39,7 +39,6 @@ public class GPSEngine {
         solNode = new GPSSolution(currentNode.getSolution(),
                 explosionCounter, currentNode.getCost());
       } else if (nodeShouldBeExploded(currentNode)){
-        System.out.println("Open Nodes: " + openNodes.size());
         explode(currentNode, strategy, problem);
       }
     }
@@ -50,7 +49,6 @@ public class GPSEngine {
   private void printSolution(final GPSSolution solNode) {
     if (solNode == null) {
       System.err.println("[FAILED] - solution not found!");
-      System.err.println("Open Nodes: " + openNodes.size());
     } else {
       System.out.println("[OK] - Solution found!");
       System.out.println(solNode.getSolution());
