@@ -3,13 +3,12 @@ package ar.edu.itba.sia.gps.core;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.api.SearchStrategyInterface;
+import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.ASTARSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.BFSSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.DFSSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.GREEDYSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.IDDFSSearchStrategy;
-import ar.edu.itba.sia.gps.strategy.SearchStrategy;
-import ar.edu.itba.sia.gps.strategy.SearchStrategyManager;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +21,7 @@ public class GPSEngine {
   // Will always be consumed from the beginning
   private final Deque<GPSNode> openNodes;
   private final Map<GPSState, Integer> bestCostsPerState;
-  private final SearchStrategyManager searchStrategy;
+  private final SearchStrategyInterface searchStrategy;
   private long explosionCounter;
 
   // Necessary because @apierri added them to: https://github.com/apierri/GeneralProblemSolver
@@ -40,19 +39,13 @@ public class GPSEngine {
   public GPSEngine(final GPSProblem problem, final SearchStrategy strategy) {
     this.problem = problem;
     this.strategy = strategy;
-    this.searchStrategy = initSearchStrategyManager(strategy);
+    this.searchStrategy = chooseStrategy(strategy);
     this.openNodes = new LinkedList<>();
     this.bestCostsPerState = new HashMap<>();
     this.explosionCounter = 0;
     this.finished = false;
     this.failed = false;
     this.solutionNode = null;
-  }
-
-  private SearchStrategyManager initSearchStrategyManager(final SearchStrategy strategy) {
-    final SearchStrategyManager ss = new SearchStrategyManager();
-    ss.setStrategy(chooseStrategy(strategy));
-    return ss;
   }
 
   private SearchStrategyInterface chooseStrategy(final SearchStrategy strategy) {

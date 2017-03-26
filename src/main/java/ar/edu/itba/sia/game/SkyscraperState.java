@@ -31,6 +31,11 @@ public class SkyscraperState implements GPSState {
     return board.hashCode();
   }
 
+  @Override
+  public String toString() {
+    return board.toString();
+  }
+
   public SkyscraperBoard getBoard() {
     return board;
   }
