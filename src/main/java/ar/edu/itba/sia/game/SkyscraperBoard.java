@@ -1,32 +1,14 @@
 package ar.edu.itba.sia.game;
 
-public class SkyscraperBoard implements Integer2DBoard, Visibility {
+public interface SkyscraperBoard extends Visibility {
 
-  private final ArrayVisibility visibility;
-  private final int[][] matrix;
+  int getSize();
 
-  public SkyscraperBoard(final int n, final ArrayVisibility visibility) {
-    this.visibility = visibility;
-    this.matrix = new int[n][n];
-  }
+  int getValue(final int row, final int column);
 
-  @Override
-  public int getValue(final int row, final int column) {
-    return matrix[row][column];
-  }
+  SkyscraperBoard setValue(final int row, final int column, final int value);
 
-  @Override
-  public void setValue(final int row, final int column, final int value) {
-    matrix[row][column] = value;
-  }
+  boolean isEmpty(final int row, final int column);
 
-  @Override
-  public boolean isEmpty(final int row, final int column) {
-    return matrix[row][column] == 0;
-  }
-
-  @Override
-  public int getVisibility(final Border border, final int position) {
-    return visibility.getVisibility(border, position);
-  }
+  boolean isFull();
 }
