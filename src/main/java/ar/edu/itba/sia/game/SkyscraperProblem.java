@@ -3,6 +3,7 @@ package ar.edu.itba.sia.game;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
+import java.awt.Point;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -13,8 +14,19 @@ public class SkyscraperProblem implements GPSProblem {
   private final List<GPSRule> rules;
 
   public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules) {
-    this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
+    this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard), getFirstEmptyPosition(initialBoard));
     this.rules = rules;
+  }
+
+  private Point getFirstEmptyPosition(SkyscraperBoard board) {
+    for (int i = 0; i < board.getSize(); i++) {
+      for (int j = 0; j < board.getSize(); j++) {
+        if(board.isEmpty(i, j)){
+          return new Point(i, j);
+        }
+      }
+    }
+    return null;
   }
 
   @Override

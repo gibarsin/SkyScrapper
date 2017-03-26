@@ -5,6 +5,7 @@ import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
+import java.awt.Point;
 import java.util.Optional;
 
 public class SkyscraperPutRule implements GPSRule {
@@ -36,23 +37,38 @@ public class SkyscraperPutRule implements GPSRule {
 
   /**
    * @param state The previous state of the problem.
-   * @return A new state with the updated board containing a new value.
+   * @return An Optional, containing the new state if it could be computed or an empty optional otherwise.
+   * (The new state is computed if the last empty position on the board equals the position where this
+   * rule was created to insert).
    */
   @Override
   public Optional<GPSState> evalRule(final GPSState state) {
 
-    SkyscraperBoard board = ((SkyscraperState) state).getBoard();
+    SkyscraperState skyscraperState = (SkyscraperState) state;
+    SkyscraperBoard board = skyscraperState.getBoard();
     SkyscraperBoard newBoard = null;
     GPSState newState = null;
 
-    if (board.isEmpty(row, col)) {
-      newBoard = setValue(board, row, col, number);
+    Point firstEmptyPosition = skyscraperState.getFirstEmptyPosition();
+    if(firstEmptyPosition != null && firstEmptyPosition.x == row && firstEmptyPosition.y == col){
+      newBoard = setValue(board, row, col, number); // Can return null
     }
 
     if (newBoard != null) {
-      newState = new SkyscraperState(newBoard);
+      newState = new SkyscraperState(newBoard, getFirstEmptyPosition(newBoard));
     }
     return Optional.ofNullable(newState);
+  }
+
+  private Point getFirstEmptyPosition(SkyscraperBoard board) {
+    for (int i = 0; i < board.getSize(); i++) {
+      for (int j = 0; j < board.getSize(); j++) {
+        if(board.isEmpty(i, j)){
+          return new Point(i, j);
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -78,10 +94,14 @@ public class SkyscraperPutRule implements GPSRule {
 
   private boolean checkVisibility(final SkyscraperBoard board, final int row, final int col,
       final int number) {
+    if(row == board.getSize() - 1 || col == board.getSize() - 1){
+      return checkLeftRowVisibility(board, row, col, number) &&
+          checkRightRowVisibility(board, row, col, number) &&
+          checkTopColumnVisibility(board, row, col, number) &&
+          checkBottomColumnVisibility(board, row, col, number);
+    }
     return checkLeftRowVisibility(board, row, col, number) &&
-        checkRightRowVisibility(board, row, col, number) &&
-        checkTopColumnVisibility(board, row, col, number) &&
-        checkBottomColumnVisibility(board, row, col, number);
+        checkTopColumnVisibility(board, row, col, number);
   }
 
   private boolean checkLeftRowVisibility(final SkyscraperBoard board, final int row, final int col,
