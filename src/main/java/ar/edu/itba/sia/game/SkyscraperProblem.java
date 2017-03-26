@@ -167,13 +167,13 @@ public class SkyscraperProblem implements GPSProblem {
     final int value = board.getValue(row, col);
 
     for (int j = 0; j < col; j++) {
-      if (!board.isEmpty(row, j) && value == board.getValue(row, j)) {
+      if (value == board.getValue(row, j)) {
         return false;
       }
     }
 
     for (int j = col + 1; j < board.getSize(); j++) {
-      if (!board.isEmpty(row, j) && value == board.getValue(row, j)) {
+      if (value == board.getValue(row, j)) {
         return false;
       }
     }
