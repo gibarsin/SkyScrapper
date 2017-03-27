@@ -19,22 +19,29 @@ public class SkyscraperState implements GPSState {
     this.firstEmptyPosition = firstEmptyPosition;
   }
 
+  public SkyscraperBoard getBoard() {
+    return board;
+  }
+
+  public Point getFirstEmptyPosition() {
+    return firstEmptyPosition;
+  }
+
   @Override
   public String toString() {
     return board.toString();
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
-
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    SkyscraperState that = (SkyscraperState) o;
+    final SkyscraperState that = (SkyscraperState) o;
 
     return board.equals(that.board);
   }
@@ -42,18 +49,5 @@ public class SkyscraperState implements GPSState {
   @Override
   public int hashCode() {
     return board.hashCode();
-  }
-
-  @Override
-  public String toString() {
-    return board.toString();
-  }
-
-  public SkyscraperBoard getBoard() {
-    return board;
-  }
-
-  public Point getFirstEmptyPosition() {
-    return firstEmptyPosition;
   }
 }

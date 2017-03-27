@@ -65,6 +65,10 @@ public class SkyscraperProblem implements GPSProblem {
           }
         }
       }
+
+      if (visibility != seen) {
+        return false;
+      }
     }
 
     maxHeight = 0;
@@ -83,6 +87,10 @@ public class SkyscraperProblem implements GPSProblem {
             return false;
           }
         }
+      }
+
+      if (visibility != seen) {
+        return false;
       }
     }
 
@@ -107,6 +115,10 @@ public class SkyscraperProblem implements GPSProblem {
           }
         }
       }
+
+      if (visibility != seen) {
+        return false;
+      }
     }
 
     maxHeight = 0;
@@ -125,6 +137,10 @@ public class SkyscraperProblem implements GPSProblem {
             return false;
           }
         }
+      }
+
+      if (visibility != seen) {
+        return false;
       }
     }
 

@@ -122,26 +122,32 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
-
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    SkyscraperBoardImpl that = (SkyscraperBoardImpl) o;
+    final SkyscraperBoardImpl that = (SkyscraperBoardImpl) o;
 
-    return visibility.equals(that.visibility) && Arrays.deepEquals(matrix, that.matrix);
+    if (emptySpaces != that.emptySpaces) {
+      return false;
+    }
+
+    if (!visibility.equals(that.visibility)) {
+      return false;
+    }
+
+    return Arrays.deepEquals(matrix, that.matrix);
   }
 
   @Override
   public int hashCode() {
     int result = visibility.hashCode();
-
     result = 31 * result + Arrays.deepHashCode(matrix);
-
+    result = 31 * result + emptySpaces;
     return result;
   }
 }
