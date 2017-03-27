@@ -22,7 +22,7 @@ public class SkyscraperPutRule implements GPSRule {
     this.row = row;
     this.col = col;
     this.number = number;
-    this.name = RULE_NAME + " " + row + " " + col + " " + number;
+    this.name = RULE_NAME + " (" + row + ", " + col + ") -> " + number;
   }
 
   @Override
@@ -48,7 +48,7 @@ public class SkyscraperPutRule implements GPSRule {
     GPSState newState = null;
 
     Point firstEmptyPosition = skyscraperState.getFirstEmptyPosition();
-    if(firstEmptyPosition != null && firstEmptyPosition.x == row && firstEmptyPosition.y == col){
+    if(firstEmptyPosition != null && firstEmptyPosition.x == row && firstEmptyPosition.y == col) {
       if (canSetValue(skyscraperState, row, col, number)) {
         SkyscraperBoard newBoard = board.setValue(row, col, number);
         newState = new SkyscraperState(newBoard);
@@ -59,10 +59,10 @@ public class SkyscraperPutRule implements GPSRule {
   }
 
   /**
-   * @param board The old board
+   * @param state The previous state of the problem
    * @param row The row to insert the new value
    * @param col The col to insert the new value
-   * @return A new board with the inserted value or null if the value did not meet the restrictions
+   * @return true if value met the restrictions and can be inserted, or false if not
    */
   private boolean canSetValue(final SkyscraperState state, final int row, final int col,
                                       final int number) {
@@ -83,7 +83,7 @@ public class SkyscraperPutRule implements GPSRule {
 
     if (board.hasVisibility(Border.LEFT, row)) {
       final int visibilityLeft = board.getVisibility(Border.LEFT, row);
-      final int countLeft = checkLeftRowVisibility(board, row, col, number);
+      final int countLeft = countLeftRowVisibility(board, row, col, number);
 
       if (state.getRowLastEmpty()[row] == col && countLeft != visibilityLeft) {
         return false;
@@ -94,7 +94,7 @@ public class SkyscraperPutRule implements GPSRule {
 
     if (board.hasVisibility(Border.TOP, col)) {
       final int visibilityTop = board.getVisibility(Border.TOP, col);
-      final int countTop = checkTopColumnVisibility(board, row, col, number);
+      final int countTop = countTopColumnVisibility(board, row, col, number);
 
       if (state.getColLastEmpty()[col] == row && countTop != visibilityTop) {
         return false;
@@ -105,7 +105,7 @@ public class SkyscraperPutRule implements GPSRule {
 
     if (board.hasVisibility(Border.RIGHT, row) && state.getRowLastEmpty()[row] == col) {
       final int visibilityRight = board.getVisibility(Border.RIGHT, row);
-      final int countRight = checkRightRowVisibility(board, row, col, number);
+      final int countRight = countRightRowVisibility(board, row, col, number);
 
       if (countRight != visibilityRight) {
         return false;
@@ -114,7 +114,7 @@ public class SkyscraperPutRule implements GPSRule {
 
     if (board.hasVisibility(Border.BOTTOM, col) && state.getColLastEmpty()[col] == row) {
       final int visibilityBottom = board.getVisibility(Border.BOTTOM, col);
-      final int countBottom = checkBottomColumnVisibility(board, row, col, number);
+      final int countBottom = countBottomColumnVisibility(board, row, col, number);
 
       if (countBottom != visibilityBottom) {
         return false;
@@ -124,7 +124,7 @@ public class SkyscraperPutRule implements GPSRule {
     return true;
   }
 
-  private int checkLeftRowVisibility(final SkyscraperBoard board, final int row, final int col,
+  private int countLeftRowVisibility(final SkyscraperBoard board, final int row, final int col,
                                      final int number) {
     int max = 0, count = 0;
 
@@ -150,7 +150,7 @@ public class SkyscraperPutRule implements GPSRule {
     return count;
   }
 
-  private int checkRightRowVisibility(final SkyscraperBoard board, final int row, final int col,
+  private int countRightRowVisibility(final SkyscraperBoard board, final int row, final int col,
                                       final int number) {
     int max = 0, count = 0;
 
@@ -176,7 +176,7 @@ public class SkyscraperPutRule implements GPSRule {
     return count;
   }
 
-  private int checkTopColumnVisibility(final SkyscraperBoard board, final int row,
+  private int countTopColumnVisibility(final SkyscraperBoard board, final int row,
                                        final int col, final int number) {
     int max = 0, count = 0;
 
@@ -202,10 +202,9 @@ public class SkyscraperPutRule implements GPSRule {
     return count;
   }
 
-  private int checkBottomColumnVisibility(final SkyscraperBoard board, final int row,
-      final int col, final int number) {
+  private int countBottomColumnVisibility(final SkyscraperBoard board, final int row,
+                                          final int col, final int number) {
     int max = 0, count = 0;
-
 
     for (int i = board.getSize() - 1; i > row; i--) {
       if (board.getValue(i, col) > max) {
@@ -213,10 +212,12 @@ public class SkyscraperPutRule implements GPSRule {
         count++;
       }
     }
+
     if (number > max) {
       max = number;
       count++;
     }
+
     for (int i = row - 1; i >= 0; i--) {
       if (board.getValue(i, col) > max) {
         max = board.getValue(i, col);
@@ -226,5 +227,4 @@ public class SkyscraperPutRule implements GPSRule {
 
     return count;
   }
-
 }
