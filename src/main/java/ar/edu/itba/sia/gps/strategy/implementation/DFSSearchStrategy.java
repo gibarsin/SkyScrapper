@@ -23,9 +23,7 @@ public class DFSSearchStrategy extends SSOneTimeCycle {
     // this is a strict lower as if we were exploding a node that satisfies depth(node) == maxDepth,
     // its exploded nodes will have depth 'maxDepth + 1', ant they should not be analysed as
     // possible solutions
-    long depth = depth(node);
-    System.out.println(depth);
-    return bestCostState == null && depth < maxDepth;
+    return bestCostState == null && depth(node) < maxDepth;
   }
 
   @Override

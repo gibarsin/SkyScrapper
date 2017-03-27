@@ -61,8 +61,6 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
     for (final GPSRule rule : problem.getRules()) {
       final Optional<GPSState> newState = getNewStateBasedOn(rule, currentNode.getState());
       if (newState.isPresent()) {
-        System.out.println(rule.getName());
-        System.out.println(newState.get().toString());
         final int newCost = getNewCost(currentNode, rule);
         final GPSNode newNode = new GPSNode(newState.get(), newCost);
         newNode.setParent(currentNode);

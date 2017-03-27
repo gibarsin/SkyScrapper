@@ -8,24 +8,19 @@ public class SkyscraperState implements GPSState {
 
   private final SkyscraperBoard board;
   private final Point firstEmptyPosition;
-  private static int[] rowLastEmpty;
-  private static int[] colLastEmpty;
-
-  public SkyscraperState(final SkyscraperBoard board, final Point firstEmptyPosition) {
-    this.board = Objects.requireNonNull(board);
-    this.firstEmptyPosition = firstEmptyPosition;
-  }
+  private final int[] rowLastEmpty;
+  private final int[] colLastEmpty;
 
   public SkyscraperState(final SkyscraperBoard board) {
     this.board = Objects.requireNonNull(board);
-    if(board.isFull()){
+    if(board.isFull()) {
       this.firstEmptyPosition = null;
-      this.rowLastEmpty = null;
-      this.colLastEmpty = null;
-    } else{
+      rowLastEmpty = null;
+      colLastEmpty = null;
+    } else {
       this.firstEmptyPosition = findFirstEmptyPosition(board);
-      this.rowLastEmpty = findRowLastEmpty(board);
-      this.colLastEmpty = findColLastEmpty(board);
+      rowLastEmpty = findRowLastEmpty(board);
+      colLastEmpty = findColLastEmpty(board);
     }
   }
 
@@ -37,11 +32,11 @@ public class SkyscraperState implements GPSState {
     return firstEmptyPosition;
   }
 
-  public static int[] getRowLastEmpty() {
+  public int[] getRowLastEmpty() {
     return rowLastEmpty;
   }
 
-  public static int[] getColLastEmpty() {
+  public int[] getColLastEmpty() {
     return colLastEmpty;
   }
 

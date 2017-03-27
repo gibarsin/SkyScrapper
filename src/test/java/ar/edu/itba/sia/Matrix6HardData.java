@@ -42,8 +42,9 @@ public class Matrix6HardData {
           {2, 5, 1, 4, 3, 6}
       }, visibility)
   );
+  private static final Object[] data = new Object[]{SIZE + "x" + SIZE, problem, solvedState};
 
-  public static Object[] getDataFor(SearchStrategy strategy) {
-    return new Object[]{problem, strategy, solvedState};
+  public static Object[] getData() {
+    return data;
   }
 }
