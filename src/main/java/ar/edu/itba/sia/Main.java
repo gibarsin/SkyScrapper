@@ -28,8 +28,8 @@ public class Main {
     final int[][] matrix = new int[][]{
         {0, 0, 0, 2},
         {1, 0, 0, 0},
-        {2, 0, 0, 0},
-        {1, 0, 0, 0}
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     };
     final Visibility visibility = new ArrayVisibility.Builder(
         matrix.length,
@@ -41,7 +41,7 @@ public class Main {
     final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
     final List<GPSRule> rules = getRules(matrix.length);
     final GPSProblem problem = new SkyscraperProblem(board, rules);
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
     engine.findSolution();
 
 //    Application.launch(SkyscraperUI.class, args);

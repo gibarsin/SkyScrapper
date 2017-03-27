@@ -14,19 +14,8 @@ public class SkyscraperProblem implements GPSProblem {
   private final List<GPSRule> rules;
 
   public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules) {
-    this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard), getFirstEmptyPosition(initialBoard));
+    this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
     this.rules = rules;
-  }
-
-  private Point getFirstEmptyPosition(SkyscraperBoard board) {
-    for (int i = 0; i < board.getSize(); i++) {
-      for (int j = 0; j < board.getSize(); j++) {
-        if(board.isEmpty(i, j)){
-          return new Point(i, j);
-        }
-      }
-    }
-    return null;
   }
 
   @Override

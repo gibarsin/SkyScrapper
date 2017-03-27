@@ -30,10 +30,12 @@ public class MainTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(Matrix4HardData.getDataFor(SearchStrategy.BFS),
         Matrix4HardData.getDataFor(SearchStrategy.IDDFS),
-        Matrix4HardData.getDataFor(SearchStrategy.DFS),
         Matrix5HardData.getDataFor(SearchStrategy.BFS),
-        Matrix5HardData.getDataFor(SearchStrategy.IDDFS),
+        Matrix4HardData.getDataFor(SearchStrategy.IDDFS),
+        Matrix4HardData.getDataFor(SearchStrategy.DFS),
         Matrix5HardData.getDataFor(SearchStrategy.DFS));
+
+
   }
 
   @Test

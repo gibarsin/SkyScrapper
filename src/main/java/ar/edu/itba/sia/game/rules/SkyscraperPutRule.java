@@ -71,6 +71,17 @@ public class SkyscraperPutRule implements GPSRule {
     return null;
   }
 
+  private Point getLastEmptyPosition(SkyscraperBoard board){
+    for (int i = board.getSize() - 1; i <= 0; i++) {
+      for (int j = board.getSize() - 1; j <= 0; j++) {
+        if(board.isEmpty(i, j)){
+          return new Point(i, j);
+        }
+      }
+    }
+    return null;
+  }
+
   /**
    * @param board The old board
    * @param row The row to insert the new value
@@ -94,14 +105,26 @@ public class SkyscraperPutRule implements GPSRule {
 
   private boolean checkVisibility(final SkyscraperBoard board, final int row, final int col,
       final int number) {
-    if(row == board.getSize() - 1 || col == board.getSize() - 1){
-      return checkLeftRowVisibility(board, row, col, number) &&
-          checkRightRowVisibility(board, row, col, number) &&
-          checkTopColumnVisibility(board, row, col, number) &&
-          checkBottomColumnVisibility(board, row, col, number);
+
+    if (!checkLeftRowVisibility(board, row, col, number) ||
+        !checkTopColumnVisibility(board, row, col, number)) {
+      return false;
     }
-    return checkLeftRowVisibility(board, row, col, number) &&
-        checkTopColumnVisibility(board, row, col, number);
+
+    // TODO: Reemplazar los if de abajo por:
+    // state.getColLastEmpty[col] == row && ! checkBottomColumnVisibility(board, row, col, number)
+    // state.getRowLastEmpty[row] == col && ! checkRightRowVisibility(board, row, col, number)
+    // Es necesario pasar cosas del state
+
+    if(row == board.getSize() - 1 && !checkBottomColumnVisibility(board, row, col, number)) {
+        return false;
+    }
+
+    if(col == board.getSize() -1  && ! checkRightRowVisibility(board, row, col, number)) {
+      return false;
+    }
+
+    return true;
   }
 
   private boolean checkLeftRowVisibility(final SkyscraperBoard board, final int row, final int col,
