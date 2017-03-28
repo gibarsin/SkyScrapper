@@ -12,7 +12,6 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import java.util.Optional;
 
 public class SkyscraperSwapRule implements GPSRule {
-
   private static final int COST = 12;
   private static final String RULE_NAME = "SWAP";
   private final String name;
@@ -44,7 +43,7 @@ public class SkyscraperSwapRule implements GPSRule {
   public Optional<GPSState> evalRule(final GPSState state) {
     final SkyscraperBoard board = ((SkyscraperState) state).getBoard();
 
-    if (!board.isFull()) {
+    if (!board.isFull() || !board.isValidSwap(row1, col1, row2, col2)) {
       return Optional.empty();
     }
 

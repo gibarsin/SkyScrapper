@@ -3,19 +3,28 @@ package ar.edu.itba.sia.game;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
-import java.awt.Point;
+import ar.edu.itba.sia.gps.api.H;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 public class SkyscraperProblem implements GPSProblem {
+  private static final int NO_H_VALUE = 0;
 
   private final SkyscraperState initialState;
   private final List<GPSRule> rules;
+  private final List<H> heuristics;
+  private final boolean admissibleHeuristics;
+  private final BoardValidator boardValidator;
 
-  public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules) {
+  public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules,
+      final List<H> heuristics, final boolean admissibleHeuristics,
+      final BoardValidator boardValidator) {
     this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
-    this.rules = rules;
+    this.rules = Objects.requireNonNull(rules);
+    this.heuristics = Objects.requireNonNull(heuristics);
+    this.admissibleHeuristics = admissibleHeuristics;
+    this.boardValidator = Objects.requireNonNull(boardValidator);
   }
 
   @Override
@@ -28,124 +37,7 @@ public class SkyscraperProblem implements GPSProblem {
     final SkyscraperState ssState = (SkyscraperState) state;
     final SkyscraperBoard board = ssState.getBoard();
 
-    return board.isFull() && !areCrossConflicts(board) && !areVisibilityConflicts(board);
-  }
-
-  private boolean areVisibilityConflicts(final SkyscraperBoard board) {
-    return IntStream.range(0, board.getSize()).parallel()
-        .anyMatch(v -> !hasCorrectRowVisibility(board, v) || !hasCorrectColumnVisibility(board, v));
-  }
-
-  private boolean hasCorrectRowVisibility(final SkyscraperBoard board, final int row) {
-    int maxHeight = 0;
-    int seen = 0;
-
-    if (board.hasVisibility(Border.LEFT, row)) {
-      final int visibility = board.getVisibility(Border.LEFT, row);
-      for (int j = 0; j < board.getSize(); j++) {
-        final int currValue = board.getValue(row, j);
-
-        if (currValue > maxHeight) {
-          seen++;
-          maxHeight = currValue;
-
-          if (seen > visibility) {
-            return false;
-          }
-        }
-      }
-
-      if (visibility != seen) {
-        return false;
-      }
-    }
-
-    maxHeight = 0;
-    seen = 0;
-
-    if (board.hasVisibility(Border.RIGHT, row)) {
-      final int visibility = board.getVisibility(Border.RIGHT, row);
-      for (int j = board.getSize() - 1; j >= 0; j--) {
-        final int currValue = board.getValue(row, j);
-
-        if (currValue > maxHeight) {
-          seen++;
-          maxHeight = currValue;
-
-          if (seen > visibility) {
-            return false;
-          }
-        }
-      }
-
-      if (visibility != seen) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private boolean hasCorrectColumnVisibility(final SkyscraperBoard board, final int column) {
-    int maxHeight = 0;
-    int seen = 0;
-
-    if (board.hasVisibility(Border.TOP, column)) {
-      final int visibility = board.getVisibility(Border.TOP, column);
-      for (int i = 0; i < board.getSize(); i++) {
-        final int currValue = board.getValue(i, column);
-
-        if (currValue > maxHeight) {
-          seen++;
-          maxHeight = currValue;
-
-          if (seen > visibility) {
-            return false;
-          }
-        }
-      }
-
-      if (visibility != seen) {
-        return false;
-      }
-    }
-
-    maxHeight = 0;
-    seen = 0;
-
-    if (board.hasVisibility(Border.BOTTOM, column)) {
-      final int visibility = board.getVisibility(Border.BOTTOM, column);
-      for (int i = board.getSize() - 1; i >= 0; i--) {
-        final int currValue = board.getValue(i, column);
-
-        if (currValue > maxHeight) {
-          seen++;
-          maxHeight = currValue;
-
-          if (seen > visibility) {
-            return false;
-          }
-        }
-      }
-
-      if (visibility != seen) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private boolean areCrossConflicts(final SkyscraperBoard board) {
-    for (int i = 0; i < board.getSize(); i++) {
-      for (int j = 0; j < board.getSize(); j++) {
-        if (!isUniqueInRow(board, i, j) || !isUniqueInColumn(board, i, j)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return board.isFull() && !boardValidator.areConflictsOn(board);
   }
 
   @Override
@@ -155,52 +47,35 @@ public class SkyscraperProblem implements GPSProblem {
 
   @Override
   public Integer getHValue(final GPSState state) {
-    return 1; // TODO: Implement heuristics
+    return admissibleHeuristics ? maxH(state) : minH(state);
   }
 
-  /**
-   * This method assumes that none of the values in the board are empty
-   *
-   * @return true if the value is unique in its column; false else
-   */
-  private boolean isUniqueInColumn(final SkyscraperBoard board, final int row, final int col) {
-    final int value = board.getValue(row, col);
-
-    for (int i = 0; i < row; i++) {
-      if (value == board.getValue(i, col)) {
-        return false;
+  private Integer maxH(final GPSState state) {
+    final Optional<H> maxH = heuristics.stream().max((h1, h2) -> {
+      final int h1Value = h1.getValue(state);
+      final int h2Value = h2.getValue(state);
+      if (h1Value == Integer.MAX_VALUE) {
+        if (h2Value == Integer.MAX_VALUE) {
+          return Integer.MIN_VALUE;
+        }
+        return h2.getValue(state);
       }
-    }
-
-    for (int i = row + 1; i < board.getSize(); i++) {
-      if (value == board.getValue(i, col)) {
-        return false;
+      if (h2Value == Integer.MAX_VALUE) {
+        return h1.getValue(state);
       }
-    }
+      return Integer.max(h1Value, h2Value);
+    });
 
-    return true;
+    return maxH.map(h -> h.getValue(state)).orElse(NO_H_VALUE);
   }
 
-  /**
-   * This method assumes that none of the values in the board are empty
-   *
-   * @return true if the value is unique in its row; else false
-   */
-  private boolean isUniqueInRow(final SkyscraperBoard board, final int row, final int col) {
-    final int value = board.getValue(row, col);
+  private Integer minH(final GPSState state) {
+    final Optional<H> minH = heuristics.stream().min((h1, h2) -> {
+      final int h1Value = h1.getValue(state);
+      final int h2Value = h2.getValue(state);
+      return Integer.min(h1Value, h2Value);
+    });
 
-    for (int j = 0; j < col; j++) {
-      if (value == board.getValue(row, j)) {
-        return false;
-      }
-    }
-
-    for (int j = col + 1; j < board.getSize(); j++) {
-      if (value == board.getValue(row, j)) {
-        return false;
-      }
-    }
-
-    return true;
+    return minH.map(h -> h.getValue(state)).orElse(NO_H_VALUE);
   }
 }
