@@ -5,16 +5,18 @@ import ar.edu.itba.sia.gps.api.H;
 import ar.edu.itba.sia.gps.core.GPSNode;
 import ar.edu.itba.sia.gps.strategy.SSOneTimeCycle;
 import java.util.Comparator;
-import java.util.Deque;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class GREEDYSearchStrategy extends SSOneTimeCycle {
-  private final H heuristic;
+  private final H h;
+  private final Queue<GPSNode> openNodes;
 
   public GREEDYSearchStrategy(final H heuristic) {
-    this.heuristic = heuristic;
+    this.h = heuristic;
+    this.openNodes =
+        new PriorityQueue<>(Comparator.comparingInt(node -> h.getValue(node.getState())));
   }
 
   @Override
@@ -25,13 +27,22 @@ public class GREEDYSearchStrategy extends SSOneTimeCycle {
   }
 
   @Override
-  public Queue<GPSNode> createNewOpenNodesQueue() {
-    return new PriorityQueue<>(Comparator.comparingInt(node -> heuristic.h(node.getState())));
+  protected void addNode(final GPSNode node) {
+    openNodes.offer(node);
   }
 
   @Override
-  public void addBasedOnStrategy(final Deque<GPSNode> openNodes,
-      final Queue<GPSNode> newOpenNodes) {
-    newOpenNodes.forEach(openNodes::offerFirst);
+  protected boolean isNextNode() {
+    return !openNodes.isEmpty();
+  }
+
+  @Override
+  protected GPSNode getNextNode() {
+    return openNodes.poll();
+  }
+
+  @Override
+  public Queue<GPSNode> getOpenNodes() {
+    return openNodes;
   }
 }

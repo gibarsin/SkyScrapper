@@ -6,11 +6,9 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.api.SearchStrategyInterface;
 import ar.edu.itba.sia.gps.core.GPSNode;
 import ar.edu.itba.sia.gps.core.GPSSolutionNode;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
 
 public abstract class SSOneTimeCycle implements SearchStrategyInterface {
   private final Map<GPSState, Integer> bestCostsPerState;
@@ -23,51 +21,53 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
 
   protected abstract boolean nodeShouldBeExploded(Map<GPSState, Integer> bestCostsPerState, GPSNode node);
 
-  protected abstract Queue<GPSNode> createNewOpenNodesQueue();
+  protected abstract void addNode(GPSNode node);
+  protected abstract boolean isNextNode();
+  protected abstract GPSNode getNextNode();
 
-  /**
-   * Add the new open nodes to the existent open nodes
-   * @param openNodes The deque with openNodes nodes
-   * @param newOpenNodes The new open node to be inserted into the openNodes deque
-   */
-  protected abstract void addBasedOnStrategy(Deque<GPSNode> openNodes, Queue<GPSNode> newOpenNodes);
+  @Override
+  public Map<GPSState, Integer> getBestCostsPerState() {
+    return bestCostsPerState;
+  }
 
-  public GPSSolutionNode findSolution(final GPSProblem problem,
-                                      final Deque<GPSNode> openNodes) {
-    final GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
+  @Override
+  public long getExplosionCounter() {
+    return explosionCounter;
+  }
+
+  @Override
+  public GPSSolutionNode findSolution(final GPSProblem problem) {
+    final GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null);
     // As the deque is empty, it is the same to add the root element first or last
-    openNodes.offerFirst(rootNode);
+    addNode(rootNode);
 
     explosionCounter = 0;
-    while (!openNodes.isEmpty()) {
+    while (isNextNode()) {
       // Consume always the first item of the deque
-      final GPSNode currentNode = openNodes.pollFirst();
+      final GPSNode currentNode = getNextNode();
       if (problem.isGoal(currentNode.getState())) {
         return new GPSSolutionNode(currentNode, currentNode.getSolution(),
             explosionCounter, currentNode.getCost());
       } else if (nodeShouldBeExploded(bestCostsPerState, currentNode)){
-        explode(currentNode, problem, openNodes);
+        explode(currentNode, problem);
       }
     }
     return new GPSSolutionNode(null, "No solution found", explosionCounter, -1);
   }
 
   private void explode(final GPSNode currentNode,
-      final GPSProblem problem,
-      final Deque<GPSNode> openNodes) {
+      final GPSProblem problem) {
     incrementExplosionCounter();
     updateBestCostState(currentNode);
-    final Queue<GPSNode> newOpenNodes = createNewOpenNodesQueue();
     for (final GPSRule rule : problem.getRules()) {
       final Optional<GPSState> newState = getNewStateBasedOn(rule, currentNode.getState());
       if (newState.isPresent()) {
         final int newCost = getNewCost(currentNode, rule);
-        final GPSNode newNode = new GPSNode(newState.get(), newCost);
+        final GPSNode newNode = new GPSNode(newState.get(), newCost, rule);
         newNode.setParent(currentNode);
-        newOpenNodes.add(newNode);
+        addNode(newNode);
       }
     }
-    addBasedOnStrategy(openNodes, newOpenNodes);
   }
 
   private int getNewCost(final GPSNode node, final GPSRule rule) {

@@ -1,27 +1,37 @@
 package ar.edu.itba.sia.game;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class SkyscraperBoardImpl implements SkyscraperBoard {
-
   private final Visibility visibility;
   private final int[][] matrix;
+  private final List<Point> fixedCells;
   private final int emptySpaces;
 
-  public SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility) {
+  public SkyscraperBoardImpl(final int[][] matrix, final List<Point> fixedCells,
+      final Visibility visibility) {
     this.visibility = Objects.requireNonNull(visibility);
     this.emptySpaces = checkMatrix(matrix);
     this.matrix = new int[matrix.length][];
+    this.fixedCells = Objects.requireNonNull(fixedCells);
     // TODO: cloneMatrix method (search all usages) #6
     IntStream.range(0, matrix.length).parallel()
         .forEach(i -> this.matrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
   }
 
-  private SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility, int emptySpaces) {
+  public SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility) {
+    this(matrix, new LinkedList<>(), visibility);
+  }
+
+  private SkyscraperBoardImpl(final int[][] matrix, final List<Point> fixedCells,
+      final Visibility visibility, int emptySpaces) {
     this.visibility = visibility;
     this.matrix = matrix;
+    this.fixedCells = fixedCells;
     this.emptySpaces = emptySpaces;
   }
 
@@ -70,7 +80,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
     newMatrix[row][column] = value;
 
     // TODO: https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108918178
-    return new SkyscraperBoardImpl(newMatrix, visibility, newEmptySpaces);
+    return new SkyscraperBoardImpl(newMatrix, fixedCells, visibility, newEmptySpaces);
   }
 
   @Override
@@ -81,6 +91,14 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   @Override
   public boolean isFull() {
     return emptySpaces == 0;
+  }
+
+  @Override
+  public boolean isValidSwap(final int row1, final int col1, final int row2, final int col2) {
+    return fixedCells.parallelStream().reduce(true,
+        (validUpToNow, point) ->
+          validUpToNow && !point.equals(row1, col1) && !point.equals(row2, col2),
+        (validUpToNow1, validUpToNow2) -> validUpToNow1 && validUpToNow2);
   }
 
   @Override
@@ -95,7 +113,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
     newMatrix[row1][column1] = newMatrix[row2][column2];
     newMatrix[row2][column2] = aux;
 
-    return new SkyscraperBoardImpl(newMatrix, visibility, emptySpaces);
+    return new SkyscraperBoardImpl(newMatrix, fixedCells, visibility, emptySpaces);
   }
 
   @Override

@@ -26,7 +26,6 @@ import java.awt.Point;
 import java.util.Optional;
 
 public class SkyscraperPutRule implements GPSRule {
-
   private static final int COST = 1;
   private static final String RULE_NAME = "PUT";
   private final String name;

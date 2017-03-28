@@ -13,4 +13,6 @@ public interface SkyscraperBoard extends Visibility {
   SkyscraperBoard setValue(final int row, final int column, final int value);
 
   SkyscraperBoard swapValue(final int row1, final int column1, final int row2, final int column2);
+
+  boolean isValidSwap(int row1, int col1, int row2, int col2);
 }

@@ -9,20 +9,13 @@ import ar.edu.itba.sia.gps.strategy.implementation.BFSSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.DFSSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.GREEDYSearchStrategy;
 import ar.edu.itba.sia.gps.strategy.implementation.IDDFSSearchStrategy;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
 public class GPSEngine {
   private final GPSProblem problem;
   private final SearchStrategy strategy;
-  // Will always be consumed from the beginning
-  private final Deque<GPSNode> openNodes;
-  private final Map<GPSState, Integer> bestCostsPerState;
   private final SearchStrategyInterface searchStrategy;
-  private long explosionCounter;
 
   // Necessary because @apierri added them to: https://github.com/apierri/GeneralProblemSolver
   private boolean finished;
@@ -40,9 +33,6 @@ public class GPSEngine {
     this.problem = problem;
     this.strategy = strategy;
     this.searchStrategy = chooseStrategy(strategy);
-    this.openNodes = new LinkedList<>();
-    this.bestCostsPerState = new HashMap<>();
-    this.explosionCounter = 0;
     this.finished = false;
     this.failed = false;
     this.solutionNode = null;
@@ -66,11 +56,10 @@ public class GPSEngine {
   }
 
   public void findSolution() {
-    final GPSSolutionNode gpsSolutionNode = searchStrategy.findSolution(problem, openNodes);
+    final GPSSolutionNode gpsSolutionNode = searchStrategy.findSolution(problem);
     solutionNode = gpsSolutionNode.getSolutionNode();
     finished = true;
     failed = solutionNode == null;
-    explosionCounter = gpsSolutionNode.getExplodedNodes();
     printSolution(gpsSolutionNode);
   }
 
@@ -88,11 +77,11 @@ public class GPSEngine {
   // Code added by @apierri
 
   public Queue<GPSNode> getOpen() {
-    return openNodes;
+    return searchStrategy.getOpenNodes();
   }
 
   public Map<GPSState, Integer> getBestCosts() {
-    return new HashMap<>(bestCostsPerState);
+    return searchStrategy.getBestCostsPerState();
   }
 
   public GPSProblem getProblem() {
@@ -100,7 +89,7 @@ public class GPSEngine {
   }
 
   public long getExplosionCounter() {
-    return explosionCounter;
+    return searchStrategy.getExplosionCounter();
   }
 
   public boolean isFinished() {

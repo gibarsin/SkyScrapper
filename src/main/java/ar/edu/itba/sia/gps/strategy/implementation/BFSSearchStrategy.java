@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.Queue;
 
 public class BFSSearchStrategy extends SSOneTimeCycle {
+  private final Queue<GPSNode> openNodes;
+
+  public BFSSearchStrategy() {
+    this.openNodes = new LinkedList<>();
+  }
 
   @Override
   public boolean nodeShouldBeExploded(final Map<GPSState, Integer> bestCostsPerState,
@@ -18,12 +23,22 @@ public class BFSSearchStrategy extends SSOneTimeCycle {
   }
 
   @Override
-  public Queue<GPSNode> createNewOpenNodesQueue() {
-    return new LinkedList<>();
+  protected void addNode(final GPSNode node) {
+    openNodes.offer(node);
   }
 
-  public void addBasedOnStrategy(final Deque<GPSNode> openNodes,
-      final Queue<GPSNode> newOpenNodes) {
-    newOpenNodes.forEach(openNodes::offerLast);
+  @Override
+  protected boolean isNextNode() {
+    return !openNodes.isEmpty();
+  }
+
+  @Override
+  protected GPSNode getNextNode() {
+    return openNodes.poll();
+  }
+
+  @Override
+  public Queue<GPSNode> getOpenNodes() {
+    return openNodes;
   }
 }
