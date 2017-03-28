@@ -11,10 +11,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class GREEDYSearchStrategy extends SSOneTimeCycle {
-  private final H heuristic;
+  private final H h;
 
   public GREEDYSearchStrategy(final H heuristic) {
-    this.heuristic = heuristic;
+    this.h = heuristic;
   }
 
   @Override
@@ -26,7 +26,7 @@ public class GREEDYSearchStrategy extends SSOneTimeCycle {
 
   @Override
   public Queue<GPSNode> createNewOpenNodesQueue() {
-    return new PriorityQueue<>(Comparator.comparingInt(node -> heuristic.h(node.getState())));
+    return new PriorityQueue<>(Comparator.comparingInt(node -> h.getValue(node.getState())));
   }
 
   @Override

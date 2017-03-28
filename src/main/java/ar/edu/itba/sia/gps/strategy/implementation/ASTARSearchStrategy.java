@@ -44,6 +44,6 @@ public class ASTARSearchStrategy extends SSOneTimeCycle {
   }
 
   private int h(final GPSNode node) {
-    return heuristic.h(node.getState());
+    return heuristic.getValue(node.getState());
   }
 }

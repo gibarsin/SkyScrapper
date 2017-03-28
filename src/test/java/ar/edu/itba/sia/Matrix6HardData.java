@@ -1,14 +1,18 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.game.ArrayVisibility;
+import ar.edu.itba.sia.game.BoardValidator;
+import ar.edu.itba.sia.game.BoardValidatorImpl;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.game.Visibility;
 import ar.edu.itba.sia.gps.api.GPSProblem;
+import ar.edu.itba.sia.gps.api.H;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
+import java.util.List;
 
-public class Matrix6HardData {
+/* package-private */ class Matrix6HardData {
 
   private static final int SIZE = 6;
 
@@ -20,6 +24,9 @@ public class Matrix6HardData {
       new int[]{0, 0, 3, 0, 4, 0}
   ).build();
 
+  private static final BoardValidator boardValidator = new BoardValidatorImpl(SIZE);
+  private static final List<H> heuristics = Main.initHeuristics(boardValidator);
+
   private static final GPSProblem problem = new SkyscraperProblem(
       new SkyscraperBoardImpl(new int[][]{
           {0, 0, 0, 0, 0, 0},
@@ -29,7 +36,7 @@ public class Matrix6HardData {
           {0, 0, 0, 0, 0, 0},
           {0, 0, 0, 0, 0, 0}
       }, visibility),
-      Main.getRules(SIZE)
+      Main.getRules(SIZE), heuristics, boardValidator
   );
 
   private static final SkyscraperState solvedState = new SkyscraperState(
@@ -44,7 +51,7 @@ public class Matrix6HardData {
   );
   private static final Object[] data = new Object[]{SIZE + "x" + SIZE, problem, solvedState};
 
-  public static Object[] getData() {
+  /* package-private */ static Object[] getData() {
     return data;
   }
 }

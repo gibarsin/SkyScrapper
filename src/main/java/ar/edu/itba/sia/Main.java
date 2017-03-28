@@ -1,17 +1,22 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.game.ArrayVisibility;
+import ar.edu.itba.sia.game.BoardValidator;
+import ar.edu.itba.sia.game.BoardValidatorImpl;
 import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.Visibility;
+import ar.edu.itba.sia.game.heuristic.IdealAmountOfSwapsHeuristic;
 import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
 import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
+import ar.edu.itba.sia.gps.api.H;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
@@ -38,16 +43,19 @@ public class Main {
         new int[]{0, 0, 0, 0},
         new int[]{2, 0, 0, 2}
     ).build();
+
     final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
     final List<GPSRule> rules = getRules(matrix.length);
-    final GPSProblem problem = new SkyscraperProblem(board, rules);
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
+    final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
+    final List<H> heuristics = initHeuristics(boardValidator);
+    final GPSProblem problem = new SkyscraperProblem(board, rules, heuristics, boardValidator);
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
     engine.findSolution();
 
 //    Application.launch(SkyscraperUI.class, args);
   }
 
-  /* package-private */ static List<GPSRule> getRules(int size) {
+  public static List<GPSRule> getRules(int size) {
     final List<GPSRule> rules = new ArrayList<>();
 
     for (int i = 0; i < size; i++) {
@@ -73,4 +81,10 @@ public class Main {
     return rules;
   }
 
+  /* package-private */ static List<H> initHeuristics(final BoardValidator boardValidator) {
+    final List<H> heuristics = new LinkedList<>();
+    // swap heuristic - admissible
+    heuristics.add(new IdealAmountOfSwapsHeuristic(boardValidator));
+    return heuristics;
+  }
 }
