@@ -1,3 +1,15 @@
+/*
+  TODO:
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108918737
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108919042
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108919069
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108919425
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108920018
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108920645
+ */
+
+
+
 package ar.edu.itba.sia.game;
 
 import ar.edu.itba.sia.gps.api.GPSState;
@@ -40,7 +52,7 @@ public class SkyscraperState implements GPSState {
     return colLastEmpty;
   }
 
-  private Point findFirstEmptyPosition(SkyscraperBoard board) {
+  private Point findFirstEmptyPosition(final SkyscraperBoard board) {
     for (int i = 0; i < board.getSize(); i++) {
       for (int j = 0; j < board.getSize(); j++) {
         if(board.isEmpty(i, j)){
@@ -51,7 +63,7 @@ public class SkyscraperState implements GPSState {
     return null;
   }
 
-  private int[] findRowLastEmpty(SkyscraperBoard board){
+  private int[] findRowLastEmpty(final SkyscraperBoard board){
     int[] row = new int[board.getSize()];
     boolean found = false;
     for (int i = 0; i < board.getSize(); i++) {
@@ -69,7 +81,7 @@ public class SkyscraperState implements GPSState {
     return row;
   }
 
-  private int[] findColLastEmpty(SkyscraperBoard board){
+  private int[] findColLastEmpty(final SkyscraperBoard board){
     int[] col = new int[board.getSize()];
     boolean found = false;
     for (int j = 0; j < board.getSize(); j++) {

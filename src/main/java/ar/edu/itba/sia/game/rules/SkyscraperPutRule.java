@@ -1,3 +1,20 @@
+/*
+  TODO:
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108921564
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108922776
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108925347
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108926148
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108928975
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108929112
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108930498
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108930640
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108931189
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108931296
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108932343
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108932453
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108932653
+ */
+
 package ar.edu.itba.sia.game.rules;
 
 import ar.edu.itba.sia.game.Border;
@@ -37,32 +54,32 @@ public class SkyscraperPutRule implements GPSRule {
 
   /**
    * @param state The previous state of the problem.
-   * @return An Optional, containing the new state if it could be computed or an empty optional otherwise.
-   * (The new state is computed if the last empty position on the board equals the position where this
-   * rule was created to insert).
+   * @return An Optional, containing the new state if it could be computed
+   *         or an empty optional otherwise.
+   *
+   * @implNote The new state is computed if the last empty position on the board
+   *           equals the position where this rule will be applied.
    */
   @Override
   public Optional<GPSState> evalRule(final GPSState state) {
-    SkyscraperState skyscraperState = (SkyscraperState) state;
-    SkyscraperBoard board = skyscraperState.getBoard();
-    GPSState newState = null;
+    final SkyscraperState skyscraperState = (SkyscraperState) state;
+    final SkyscraperBoard board = skyscraperState.getBoard();
 
-    Point firstEmptyPosition = skyscraperState.getFirstEmptyPosition();
+    final Point firstEmptyPosition = skyscraperState.getFirstEmptyPosition();
     if(firstEmptyPosition != null && firstEmptyPosition.x == row && firstEmptyPosition.y == col) {
       if (canSetValue(skyscraperState, row, col, number)) {
-        SkyscraperBoard newBoard = board.setValue(row, col, number);
-        newState = new SkyscraperState(newBoard);
+        return Optional.of(new SkyscraperState(board.setValue(row, col, number)));
       }
     }
 
-    return Optional.ofNullable(newState);
+    return Optional.empty();
   }
 
   /**
    * @param state The previous state of the problem
    * @param row The row to insert the new value
    * @param col The col to insert the new value
-   * @return true if value met the restrictions and can be inserted, or false if not
+   * @return true if value met the restrictions to be inserted; false otherwise
    */
   private boolean canSetValue(final SkyscraperState state, final int row, final int col,
                                       final int number) {

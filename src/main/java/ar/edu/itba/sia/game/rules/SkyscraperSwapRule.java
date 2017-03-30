@@ -1,3 +1,8 @@
+/*
+  TODO:
+  https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108933023
+ */
+
 package ar.edu.itba.sia.game.rules;
 
 import ar.edu.itba.sia.game.SkyscraperBoard;
@@ -43,6 +48,6 @@ public class SkyscraperSwapRule implements GPSRule {
       return Optional.empty();
     }
 
-    return Optional.ofNullable(new SkyscraperState(board.swapValue(row1, col1, row2, col2)));
+    return Optional.of(new SkyscraperState(board.swapValue(row1, col1, row2, col2)));
   }
 }

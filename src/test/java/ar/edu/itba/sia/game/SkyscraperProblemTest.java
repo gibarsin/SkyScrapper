@@ -45,6 +45,7 @@ public class SkyscraperProblemTest {
 
   @Test
   public void test003IsGoalForIncorrectMatrixShouldBeFalse() {
+    // just having visibility conflicts
     final int[][] incorrectAnswerMatrix = new int[][]{
         {4, 3, 2, 1},
         {3, 2, 1, 4},

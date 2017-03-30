@@ -47,7 +47,7 @@ public class Main {
 //    Application.launch(SkyscraperUI.class, args);
   }
 
-  public static List<GPSRule> getRules(int size) {
+  /* package-private */ static List<GPSRule> getRules(int size) {
     final List<GPSRule> rules = new ArrayList<>();
 
     for (int i = 0; i < size; i++) {
@@ -58,11 +58,13 @@ public class Main {
       }
     }
 
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        for (int k = i; k < size; k++) {
-          for (int l = j + 1; l < size; l++) {
-            rules.add(new SkyscraperSwapRule(i, j, k, l));
+    for (int row1 = 0; row1 < size; row1++) {
+      for (int col1 = 0; col1 < size; col1++) {
+        for (int row2 = row1; row2 < size; row2++) {
+          for (int col2 = col1 ; col2 < size; col2++) {
+            if (row1 != row2 && col1 != col2) {
+              rules.add(new SkyscraperSwapRule(row1, col1, row2, col2));
+            }
           }
         }
       }

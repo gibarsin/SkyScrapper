@@ -14,6 +14,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
     this.visibility = Objects.requireNonNull(visibility);
     this.emptySpaces = checkMatrix(matrix);
     this.matrix = new int[matrix.length][];
+    // TODO: cloneMatrix method (search all usages) #6
     IntStream.range(0, matrix.length).parallel()
         .forEach(i -> this.matrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
   }
@@ -68,6 +69,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
         .forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
     newMatrix[row][column] = value;
 
+    // TODO: https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108918178
     return new SkyscraperBoardImpl(newMatrix, visibility, newEmptySpaces);
   }
 
