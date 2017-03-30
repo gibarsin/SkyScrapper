@@ -4,6 +4,8 @@ import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
+import ar.edu.itba.sia.matrix.Matrix4HardData;
+import ar.edu.itba.sia.matrix.Matrix5HardData;
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Assert;
@@ -29,9 +31,9 @@ public class MainTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(
         Matrix4HardData.getData(),
-        Matrix5HardData.getData(),
-        Matrix6HardData.getData(),
-        Matrix9HardData.getData()
+        Matrix5HardData.getData()
+//        Matrix6HardData.getData(),
+//        Matrix9HardData.getData()
     );
   }
 
@@ -52,6 +54,20 @@ public class MainTest {
   @Test
   public void testIDDFS() throws Exception {
     final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
+    engine.findSolution();
+    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+  }
+
+  @Test
+  public void testGREEDY() throws Exception {
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
+    engine.findSolution();
+    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+  }
+
+  @Test
+  public void testASTAR() throws Exception {
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
     engine.findSolution();
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
   }

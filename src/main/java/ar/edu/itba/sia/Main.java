@@ -81,7 +81,7 @@ public class Main {
     return rules;
   }
 
-  /* package-private */ static List<H> initHeuristics(final BoardValidator boardValidator) {
+  public static List<H> initHeuristics(final BoardValidator boardValidator) {
     final List<H> heuristics = new LinkedList<>();
     // swap heuristic - admissible
     heuristics.add(new IdealAmountOfSwapsHeuristic(boardValidator));
