@@ -31,10 +31,10 @@ public class Main {
 //        {3, 4, 1, 2}
 //    };
     final int[][] matrix = new int[][]{
-        {0, 0, 0, 2},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
+        {1, 3, 2, 1},
+        {4, 2, 4, 3},
+        {2, 1, 3, 4},
+        {3, 4, 1, 2}
     };
     final Visibility visibility = new ArrayVisibility.Builder(
         matrix.length,
@@ -49,7 +49,7 @@ public class Main {
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final List<H> heuristics = initHeuristics(boardValidator);
     final GPSProblem problem = new SkyscraperProblem(board, rules, heuristics, boardValidator);
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
     engine.findSolution();
 
 //    Application.launch(SkyscraperUI.class, args);
@@ -70,7 +70,7 @@ public class Main {
       for (int col1 = 0; col1 < size; col1++) {
         for (int row2 = row1; row2 < size; row2++) {
           for (int col2 = col1 ; col2 < size; col2++) {
-            if (row1 != row2 && col1 != col2) {
+            if (row1 != row2 || col1 != col2) {
               rules.add(new SkyscraperSwapRule(row1, col1, row2, col2));
             }
           }

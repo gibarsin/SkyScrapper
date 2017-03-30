@@ -12,8 +12,7 @@ import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.H;
 import java.util.List;
 
-public class Matrix4HardData {
-
+public abstract class Matrix4HardData {
   private static final int SIZE = 4;
 
   private static final Visibility visibility = new ArrayVisibility.Builder(
@@ -27,13 +26,8 @@ public class Matrix4HardData {
   private static final BoardValidator boardValidator = new BoardValidatorImpl(SIZE);
   private static final List<H> heuristics = Main.initHeuristics(boardValidator);
 
-  private static final GPSProblem problem = new SkyscraperProblem(
-      new SkyscraperBoardImpl(new int[][]{
-          {0, 0, 0, 2},
-          {1, 0, 0, 0},
-          {0, 0, 0, 0},
-          {0, 0, 0, 0}
-      }, visibility),
+  private final GPSProblem problem = new SkyscraperProblem(
+      new SkyscraperBoardImpl(getMatrix(), visibility),
       Main.getRules(SIZE), heuristics, boardValidator
   );
 
@@ -45,9 +39,13 @@ public class Matrix4HardData {
           {2, 4, 1, 3}
       }, visibility)
   );
-  private static final Object[] data = new Object[]{SIZE + "x" + SIZE, problem, solvedState};
+  private final Object[] data = new Object[]{SIZE + "x" + SIZE + ": " + getMethod(), problem, solvedState};
 
-  public static Object[] getData() {
+  protected abstract String getMethod();
+
+  protected abstract int[][] getMatrix();
+
+  public Object[] getData() {
     return data;
   }
 }

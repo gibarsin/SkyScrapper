@@ -5,6 +5,8 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.matrix.Matrix4HardData;
+import ar.edu.itba.sia.matrix.Matrix4HardDataPut;
+import ar.edu.itba.sia.matrix.Matrix4HardDataSwap;
 import ar.edu.itba.sia.matrix.Matrix5HardData;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,33 +32,34 @@ public class MainTest {
   @Parameters(name = "Matrix {0}")
   public static Collection<Object[]> data() {
     return Arrays.asList(
-        Matrix4HardData.getData(),
-        Matrix5HardData.getData()
+        new Matrix4HardDataPut().getData(),
+        new Matrix4HardDataSwap().getData()
+//        Matrix5HardData.getData()
 //        Matrix6HardData.getData(),
 //        Matrix9HardData.getData()
     );
   }
 
-  @Test
-  public void testBFS() throws Exception {
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
-    engine.findSolution();
-    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-  }
-
-  @Test
-  public void testDFS() throws Exception {
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
-    engine.findSolution();
-    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-  }
-
-  @Test
-  public void testIDDFS() throws Exception {
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
-    engine.findSolution();
-    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-  }
+//  @Test
+//  public void testBFS() throws Exception {
+//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+//    engine.findSolution();
+//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//  }
+//
+//  @Test
+//  public void testDFS() throws Exception {
+//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
+//    engine.findSolution();
+//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//  }
+//
+//  @Test
+//  public void testIDDFS() throws Exception {
+//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
+//    engine.findSolution();
+//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//  }
 
   @Test
   public void testGREEDY() throws Exception {
@@ -65,10 +68,10 @@ public class MainTest {
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
   }
 
-  @Test
-  public void testASTAR() throws Exception {
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
-    engine.findSolution();
-    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-  }
+//  @Test
+//  public void testASTAR() throws Exception {
+//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
+//    engine.findSolution();
+//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//  }
 }

@@ -1,5 +1,6 @@
 package ar.edu.itba.sia.gps.core;
 
+import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ public class GPSNode {
   private final GPSState state;
   private final int cost;
   private GPSNode parent;
+  private GPSRule rule;
 
   /**
    * Create a new GPS node
@@ -14,9 +16,10 @@ public class GPSNode {
    * @param cost The cost to reach the current node
    * @exception NullPointerException if {@code state} is null
    */
-  public GPSNode(final GPSState state, final Integer cost) {
+  public GPSNode(final GPSState state, final Integer cost, final GPSRule rule) {
     this.state = Objects.requireNonNull(state);
     this.cost = cost;
+    this.rule = rule;
   }
 
   public GPSNode getParent() {
@@ -33,6 +36,10 @@ public class GPSNode {
 
   public int getCost() {
     return cost;
+  }
+
+  public GPSRule getRule() {
+    return rule;
   }
 
   @Override

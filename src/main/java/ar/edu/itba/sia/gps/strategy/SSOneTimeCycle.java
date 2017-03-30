@@ -34,7 +34,7 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
 
   public GPSSolutionNode findSolution(final GPSProblem problem,
                                       final Deque<GPSNode> openNodes) {
-    final GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
+    final GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null);
     // As the deque is empty, it is the same to add the root element first or last
     openNodes.offerFirst(rootNode);
 
@@ -62,7 +62,7 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
       final Optional<GPSState> newState = getNewStateBasedOn(rule, currentNode.getState());
       if (newState.isPresent()) {
         final int newCost = getNewCost(currentNode, rule);
-        final GPSNode newNode = new GPSNode(newState.get(), newCost);
+        final GPSNode newNode = new GPSNode(newState.get(), newCost, rule);
         newNode.setParent(currentNode);
         newOpenNodes.add(newNode);
       }

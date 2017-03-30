@@ -32,6 +32,11 @@ public class GREEDYSearchStrategy extends SSOneTimeCycle {
   @Override
   public void addBasedOnStrategy(final Deque<GPSNode> openNodes,
       final Queue<GPSNode> newOpenNodes) {
-    newOpenNodes.forEach(openNodes::offerFirst);
+    // order open nodes on the priority queue of the new open nodes and then pass them all to the
+    // open nodes deque
+    while (!openNodes.isEmpty()) {
+      newOpenNodes.offer(openNodes.peek());
+    }
+    openNodes.addAll(newOpenNodes);
   }
 }
