@@ -13,7 +13,10 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   public SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility) {
     this.visibility = Objects.requireNonNull(visibility);
     this.emptySpaces = checkMatrix(matrix);
-    this.matrix = matrix;
+    this.matrix = new int[matrix.length][];
+    // TODO: cloneMatrix method (search all usages) #6
+    IntStream.range(0, matrix.length).parallel()
+        .forEach(i -> this.matrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
   }
 
   private SkyscraperBoardImpl(final int[][] matrix, final Visibility visibility, int emptySpaces) {
@@ -66,6 +69,7 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
         .forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
     newMatrix[row][column] = value;
 
+    // TODO: https://github.com/gibarsin/SkyScrapper/pull/6#discussion_r108918178
     return new SkyscraperBoardImpl(newMatrix, visibility, newEmptySpaces);
   }
 
@@ -77,6 +81,21 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   @Override
   public boolean isFull() {
     return emptySpaces == 0;
+  }
+
+  @Override
+  public SkyscraperBoard swapValue(final int row1, final int column1, final int row2,
+      final int column2) {
+    final int[][] newMatrix = new int[matrix.length][];
+
+    IntStream.range(0, matrix.length).parallel()
+        .forEach(i -> newMatrix[i] = Arrays.copyOf(matrix[i], matrix[i].length));
+
+    final int aux = newMatrix[row1][column1];
+    newMatrix[row1][column1] = newMatrix[row2][column2];
+    newMatrix[row2][column2] = aux;
+
+    return new SkyscraperBoardImpl(newMatrix, visibility, emptySpaces);
   }
 
   @Override
@@ -105,26 +124,32 @@ public class SkyscraperBoardImpl implements SkyscraperBoard {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
-
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
-    SkyscraperBoardImpl that = (SkyscraperBoardImpl) o;
+    final SkyscraperBoardImpl that = (SkyscraperBoardImpl) o;
 
-    return visibility.equals(that.visibility) && Arrays.deepEquals(matrix, that.matrix);
+    if (emptySpaces != that.emptySpaces) {
+      return false;
+    }
+
+    if (!visibility.equals(that.visibility)) {
+      return false;
+    }
+
+    return Arrays.deepEquals(matrix, that.matrix);
   }
 
   @Override
   public int hashCode() {
     int result = visibility.hashCode();
-
     result = 31 * result + Arrays.deepHashCode(matrix);
-
+    result = 31 * result + emptySpaces;
     return result;
   }
 }

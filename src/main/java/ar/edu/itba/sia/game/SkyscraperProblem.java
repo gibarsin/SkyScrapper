@@ -3,6 +3,7 @@ package ar.edu.itba.sia.game;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
+import java.awt.Point;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -53,7 +54,14 @@ public class SkyscraperProblem implements GPSProblem {
           }
         }
       }
+
+      if (visibility != seen) {
+        return false;
+      }
     }
+
+    maxHeight = 0;
+    seen = 0;
 
     if (board.hasVisibility(Border.RIGHT, row)) {
       final int visibility = board.getVisibility(Border.RIGHT, row);
@@ -68,6 +76,10 @@ public class SkyscraperProblem implements GPSProblem {
             return false;
           }
         }
+      }
+
+      if (visibility != seen) {
+        return false;
       }
     }
 
@@ -92,7 +104,14 @@ public class SkyscraperProblem implements GPSProblem {
           }
         }
       }
+
+      if (visibility != seen) {
+        return false;
+      }
     }
+
+    maxHeight = 0;
+    seen = 0;
 
     if (board.hasVisibility(Border.BOTTOM, column)) {
       final int visibility = board.getVisibility(Border.BOTTOM, column);
@@ -107,6 +126,10 @@ public class SkyscraperProblem implements GPSProblem {
             return false;
           }
         }
+      }
+
+      if (visibility != seen) {
+        return false;
       }
     }
 
