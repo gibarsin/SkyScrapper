@@ -3,6 +3,7 @@ package ar.edu.itba.sia;
 import ar.edu.itba.sia.game.ArrayVisibility;
 import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.BoardValidatorImpl;
+import ar.edu.itba.sia.game.Point;
 import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
@@ -30,18 +31,18 @@ public class Main {
 //        {2, 1, 3, 4},
 //        {3, 4, 1, 2}
 //    };
-//    final int[][] matrix = new int[][]{
-//        {1, 2, 3, 4},
-//        {2, 3, 4, 1},
-//        {3, 4, 1, 2},
-//        {4, 1, 2, 3}
-//    };
     final int[][] matrix = new int[][]{
-        {1, 3, 2, 1},
-        {4, 2, 4, 3},
-        {2, 1, 3, 4},
-        {3, 4, 1, 2}
+        {1, 2, 3, 4},
+        {2, 3, 4, 1},
+        {3, 4, 1, 2},
+        {4, 1, 2, 3}
     };
+//    final int[][] matrix = new int[][]{
+//        {1, 2, 2, 1},
+//        {4, 3, 4, 3},
+//        {2, 1, 3, 4},
+//        {3, 4, 1, 2}
+//    };
     final Visibility visibility = new ArrayVisibility.Builder(
         matrix.length,
         new int[]{1, 2, 2, 3},
@@ -50,16 +51,20 @@ public class Main {
         new int[]{4, 2, 1, 2}
     ).build();
 
-    final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
+    final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, initFixedCells(), visibility);
     final List<GPSRule> rules = getRules(matrix.length);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final List<H> heuristics = initHeuristics(boardValidator);
     final GPSProblem problem =
         new SkyscraperProblem(board, rules, heuristics, true, boardValidator);
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
     engine.findSolution();
 
 //    Application.launch(SkyscraperUI.class, args);
+  }
+
+  private static List<Point> initFixedCells() {
+    return new LinkedList<>();
   }
 
   public static List<GPSRule> getRules(int size) {

@@ -8,7 +8,8 @@ public class GPSNode {
   private final GPSState state;
   private final int cost;
   private GPSNode parent;
-  private GPSRule rule;
+  private GPSRule generationRule;
+  private int f;
 
   /**
    * Create a new GPS node
@@ -16,10 +17,10 @@ public class GPSNode {
    * @param cost The cost to reach the current node
    * @exception NullPointerException if {@code state} is null
    */
-  public GPSNode(final GPSState state, final Integer cost, final GPSRule rule) {
+  public GPSNode(final GPSState state, final Integer cost, final GPSRule generationRule) {
     this.state = Objects.requireNonNull(state);
     this.cost = cost;
-    this.rule = rule;
+    this.generationRule = generationRule;
   }
 
   public GPSNode getParent() {
@@ -38,8 +39,20 @@ public class GPSNode {
     return cost;
   }
 
-  public GPSRule getRule() {
-    return rule;
+  public GPSRule getGenerationRule() {
+    return generationRule;
+  }
+
+  public void setGenerationRule(final GPSRule generationRule) {
+    this.generationRule = generationRule;
+  }
+
+  public int getF() {
+    return f;
+  }
+
+  public void setF(final int f) {
+    this.f = f;
   }
 
   @Override

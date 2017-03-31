@@ -4,10 +4,8 @@ import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
-import ar.edu.itba.sia.matrix.Matrix4HardData;
 import ar.edu.itba.sia.matrix.Matrix4HardDataPut;
 import ar.edu.itba.sia.matrix.Matrix4HardDataSwap;
-import ar.edu.itba.sia.matrix.Matrix5HardData;
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Assert;
@@ -37,6 +35,7 @@ public class MainTest {
     return Arrays.asList(
         new Matrix4HardDataPut().getData(),
         new Matrix4HardDataSwap().getData()
+//        new Matrix9HardDataSwap().getData()
 //        Matrix5HardData.getData()
 //        Matrix6HardData.getData(),
 //        Matrix9HardData.getData()
