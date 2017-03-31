@@ -21,11 +21,14 @@ public class MainTest {
   private final String name;
   private final GPSProblem problem;
   private final GPSState solvedState;
+  private final String method;
 
-  public MainTest(final String name, final GPSProblem problem, final GPSState solvedState) {
+  public MainTest(final String name, final GPSProblem problem, final GPSState solvedState,
+      final String method) {
     this.name = name;
     this.problem = problem;
     this.solvedState = solvedState;
+    this.method = method;
     Assert.assertTrue(problem.isGoal(solvedState));
   }
 
@@ -40,26 +43,32 @@ public class MainTest {
     );
   }
 
-//  @Test
-//  public void testBFS() throws Exception {
-//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
-//    engine.findSolution();
-//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-//  }
-//
-//  @Test
-//  public void testDFS() throws Exception {
-//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
-//    engine.findSolution();
-//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-//  }
-//
-//  @Test
-//  public void testIDDFS() throws Exception {
-//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
-//    engine.findSolution();
-//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-//  }
+  @Test
+  public void testBFS() throws Exception {
+    if (method.equals("PUT")) {
+      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+      engine.findSolution();
+      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+    }
+  }
+
+  @Test
+  public void testDFS() throws Exception {
+    if (method.equals("PUT")) {
+      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
+      engine.findSolution();
+      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+    }
+  }
+
+  @Test
+  public void testIDDFS() throws Exception {
+    if (method.equals("PUT")) {
+      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
+      engine.findSolution();
+      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+    }
+  }
 
   @Test
   public void testGREEDY() throws Exception {
@@ -68,10 +77,10 @@ public class MainTest {
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
   }
 
-//  @Test
-//  public void testASTAR() throws Exception {
-//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
-//    engine.findSolution();
-//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-//  }
+  @Test
+  public void testASTAR() throws Exception {
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
+    engine.findSolution();
+    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+  }
 }

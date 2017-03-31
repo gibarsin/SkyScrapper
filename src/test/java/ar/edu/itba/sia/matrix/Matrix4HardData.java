@@ -40,7 +40,12 @@ public abstract class Matrix4HardData {
           {2, 4, 1, 3}
       }, visibility)
   );
-  private final Object[] data = new Object[]{SIZE + "x" + SIZE + ": " + getMethod(), problem, solvedState};
+  private final Object[] data = new Object[]{
+      SIZE + "x" + SIZE + ": " + getMethod(),
+      problem,
+      solvedState,
+      getMethod()
+  };
 
   protected abstract String getMethod();
 
