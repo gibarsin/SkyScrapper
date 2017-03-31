@@ -6,11 +6,9 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.api.SearchStrategyInterface;
 import ar.edu.itba.sia.gps.core.GPSNode;
 import ar.edu.itba.sia.gps.core.GPSSolutionNode;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
 
 public abstract class SSOneTimeCycle implements SearchStrategyInterface {
   private final Map<GPSState, Integer> bestCostsPerState;
@@ -30,6 +28,11 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
   @Override
   public Map<GPSState, Integer> getBestCostsPerState() {
     return bestCostsPerState;
+  }
+
+  @Override
+  public long getExplosionCounter() {
+    return explosionCounter;
   }
 
   @Override

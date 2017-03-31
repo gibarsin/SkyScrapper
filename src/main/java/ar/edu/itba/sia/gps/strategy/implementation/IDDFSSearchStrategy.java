@@ -5,7 +5,6 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.api.SearchStrategyInterface;
 import ar.edu.itba.sia.gps.core.GPSNode;
 import ar.edu.itba.sia.gps.core.GPSSolutionNode;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -36,4 +35,10 @@ public class IDDFSSearchStrategy implements SearchStrategyInterface {
   public Map<GPSState, Integer> getBestCostsPerState() {
     return dfsSearchStrategy == null ? new HashMap<>() : dfsSearchStrategy.getBestCostsPerState();
   }
+
+  @Override
+  public long getExplosionCounter() {
+    return dfsSearchStrategy == null ? 0 : dfsSearchStrategy.getExplosionCounter();
+  }
+
 }
