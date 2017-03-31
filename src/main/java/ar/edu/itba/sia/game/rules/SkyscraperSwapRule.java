@@ -30,6 +30,11 @@ public class SkyscraperSwapRule implements GPSRule {
   }
 
   @Override
+  public String toString() {
+    return "\nRule: " + name + "\n\n";
+  }
+
+  @Override
   public Integer getCost() {
     return COST;
   }

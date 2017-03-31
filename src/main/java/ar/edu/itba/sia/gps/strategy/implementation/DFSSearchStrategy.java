@@ -12,10 +12,12 @@ import java.util.Queue;
 public class DFSSearchStrategy extends SSOneTimeCycle {
   private final long maxDepth;
   private final Deque<GPSNode> openNodes;
+  private long maxReachedDepth;
 
   public DFSSearchStrategy(final long maxDepth) {
     this.maxDepth = maxDepth;
     this.openNodes = new LinkedList<>();
+    this.maxReachedDepth = 0;
   }
 
   @Override
@@ -26,16 +28,7 @@ public class DFSSearchStrategy extends SSOneTimeCycle {
     // this is a strict lower as if we were exploding a node that satisfies depth(node) == maxDepth,
     // its exploded nodes will have depth 'maxDepth + 1', ant they should not be analysed as
     // possible solutions
-    return depth(node) < maxDepth && bestCostState == null;
-  }
-
-  /**
-   *
-   * @param node The node which maxDepth is to be calculated
-   * @return 0 if node is root ; 1 + parentNode maxDepth otherwise
-   */
-  private long depth(final GPSNode node) {
-    return node.getParent() == null ? 0 : 1 + depth(node.getParent()); // TODO: move depth to node
+    return node.getDepth() < maxDepth && bestCostState == null;
   }
 
   @Override
@@ -50,11 +43,19 @@ public class DFSSearchStrategy extends SSOneTimeCycle {
 
   @Override
   protected GPSNode getNextNode() {
-    return openNodes.pollFirst();
+    final GPSNode nextNode = openNodes.pollFirst();
+    if (nextNode.getDepth() > maxReachedDepth) {
+      maxReachedDepth = nextNode.getDepth();
+    }
+    return nextNode;
   }
 
   @Override
   public Queue<GPSNode> getOpenNodes() {
     return openNodes;
+  }
+
+  public long getMaxReachedDepth() {
+    return maxReachedDepth;
   }
 }

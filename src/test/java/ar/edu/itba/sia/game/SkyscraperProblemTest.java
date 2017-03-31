@@ -1,5 +1,6 @@
 package ar.edu.itba.sia.game;
 
+import ar.edu.itba.sia.IdeMain;
 import ar.edu.itba.sia.Main;
 import java.util.LinkedList;
 import org.junit.Assert;
@@ -29,7 +30,7 @@ public class SkyscraperProblemTest {
     final SkyscraperBoard board = new SkyscraperBoardImpl(emptyMatrix, visibility);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
-        new SkyscraperProblem(board, Main.getRules(board.getSize()),
+        new SkyscraperProblem(board, IdeMain.getRules(board.getSize()),
             new LinkedList<>(), true, boardValidator);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));
@@ -46,7 +47,7 @@ public class SkyscraperProblemTest {
     final SkyscraperBoard board = new SkyscraperBoardImpl(answerMatrix, visibility);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
-        new SkyscraperProblem(board, Main.getRules(board.getSize()),
+        new SkyscraperProblem(board, IdeMain.getRules(board.getSize()),
             new LinkedList<>(), true, boardValidator);
 
     Assert.assertTrue(problem.isGoal(problem.getInitState()));
@@ -64,7 +65,7 @@ public class SkyscraperProblemTest {
     final SkyscraperBoard board = new SkyscraperBoardImpl(incorrectAnswerMatrix, visibility);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
-        new SkyscraperProblem(board, Main.getRules(board.getSize()),
+        new SkyscraperProblem(board, IdeMain.getRules(board.getSize()),
             new LinkedList<>(), true, boardValidator);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));

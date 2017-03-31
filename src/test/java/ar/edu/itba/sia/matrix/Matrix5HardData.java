@@ -1,6 +1,6 @@
 package ar.edu.itba.sia.matrix;
 
-import ar.edu.itba.sia.Main;
+import ar.edu.itba.sia.IdeMain;
 import ar.edu.itba.sia.game.ArrayVisibility;
 import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.BoardValidatorImpl;
@@ -10,7 +10,7 @@ import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.game.Visibility;
 import ar.edu.itba.sia.gps.api.GPSProblem;
-import ar.edu.itba.sia.gps.api.H;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import java.util.List;
 
 public abstract class Matrix5HardData {
@@ -26,11 +26,11 @@ public abstract class Matrix5HardData {
   ).build();
 
   private static final BoardValidator boardValidator = new BoardValidatorImpl(SIZE);
-  private static final List<H> heuristics = Main.initHeuristics(boardValidator);
+  private static final List<Heuristic> heuristics = IdeMain.initHeuristics(boardValidator);
 
   private final GPSProblem problem = new SkyscraperProblem(
       new SkyscraperBoardImpl(getMatrix(), getFixedCells(), visibility),
-      Main.getRules(SIZE), heuristics, true, boardValidator
+      IdeMain.getRules(SIZE), heuristics, true, boardValidator
   );
 
   private static final SkyscraperState solvedState = new SkyscraperState(
