@@ -42,32 +42,32 @@ public class MainTest {
     );
   }
 
-  @Test
-  public void testBFS() throws Exception {
-    if (method.equals("PUT")) {
-      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
-      engine.findSolution();
-      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-    }
-  }
+//  @Test
+//  public void testBFS() throws Exception {
+//    if (method.equals("PUT")) {
+//      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+//      engine.findSolution();
+//      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//    }
+//  }
+//
+//  @Test
+//  public void testDFS() throws Exception {
+//    if (method.equals("PUT")) {
+//      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
+//      engine.findSolution();
+//      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//    }
+//  }
 
-  @Test
-  public void testDFS() throws Exception {
-    if (method.equals("PUT")) {
-      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.DFS);
-      engine.findSolution();
-      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-    }
-  }
-
-  @Test
-  public void testIDDFS() throws Exception {
-    if (method.equals("PUT")) {
-      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
-      engine.findSolution();
-      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-    }
-  }
+//  @Test
+//  public void testIDDFS() throws Exception {
+//    if (method.equals("PUT")) {
+//      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
+//      engine.findSolution();
+//      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//    }
+//  }
 
   @Test
   public void testGREEDY() throws Exception {
@@ -76,10 +76,10 @@ public class MainTest {
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
   }
 
-  @Test
-  public void testASTAR() throws Exception {
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
-    engine.findSolution();
-    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-  }
+//  @Test
+//  public void testASTAR() throws Exception {
+//    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
+//    engine.findSolution();
+//    Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+//  }
 }

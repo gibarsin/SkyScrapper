@@ -71,7 +71,7 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
   }
 
   private int getNewCost(final GPSNode node, final GPSRule rule) {
-    return node.getCost() + rule.getCost(); // TODO: fix for A* is not like this
+    return node.getCost() + rule.getCost();
   }
 
   /**
