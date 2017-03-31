@@ -1,0 +1,25 @@
+# Template for input files
+# The following is the expected file format for solving new problems
+
+# Explanation
+N: size of rows/cols of the board's matrix
+MATRIX OF SIZE NxN: the initial matrix. Use a '0' for empty spaces. Matrix should be full.
+SEPARATOR: for clarity purposes; to separate board's matrix and visibility arrays
+TOP_VISIBILITY_ARRAY OF SIZE N: array representing the top visibilities of the above's board
+BOTTOM_VISIBILITY_ARRAY OF SIZE N: array representing the bottom visibilities of the above's board
+LEFT_VISIBILITY_ARRAY OF SIZE N: array representing the left visibilities of the above's board
+RIGHT_VISIBILITY_ARRAY OF SIZE N: array representing the right visibilities of the above's board
+
+# Example
+4
+0 0 0 2
+1 0 0 0
+0 0 0 0
+0 0 0 0
+-------
+0 3 0 0
+2 0 0 0
+0 0 0 0
+2 0 0 2
+
+# For further examples, check the other files in the resources/games folder

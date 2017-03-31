@@ -42,6 +42,11 @@ public class SkyscraperPutRule implements GPSRule {
   }
 
   @Override
+  public String toString() {
+    return "\nRule: " + name + "\n";
+  }
+
+  @Override
   public Integer getCost() {
     return COST;
   }

@@ -60,18 +60,6 @@ public class GPSEngine {
     solutionNode = gpsSolutionNode.getSolutionNode();
     finished = true;
     failed = solutionNode == null;
-    printSolution(gpsSolutionNode);
-  }
-
-  private void printSolution(final GPSSolutionNode solNode) {
-    if (solNode == null) {
-      System.err.println("[FAILED] - solution not found!");
-    } else {
-      System.out.println("[OK] - Solution found!");
-      System.out.println(solNode.getSolution());
-      System.out.println("Expanded nodes: " + solNode.getExplodedNodes());
-      System.out.println("Solution cost: " + solNode.getCost());
-    }
   }
 
   // Code added by @apierri

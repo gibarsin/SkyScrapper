@@ -7,6 +7,7 @@ import java.util.Objects;
 public class GPSNode {
   private final GPSState state;
   private final int cost;
+  private final long depth;
   private GPSNode parent;
   private GPSRule generationRule;
   private int f;
@@ -17,10 +18,12 @@ public class GPSNode {
    * @param cost The cost to reach the current node
    * @exception NullPointerException if {@code state} is null
    */
-  public GPSNode(final GPSState state, final Integer cost, final GPSRule generationRule) {
+  public GPSNode(final GPSState state, final Integer cost, final GPSRule generationRule,
+      final long depth) {
     this.state = Objects.requireNonNull(state);
     this.cost = cost;
     this.generationRule = generationRule;
+    this.depth = depth;
   }
 
   public GPSNode getParent() {
@@ -64,7 +67,7 @@ public class GPSNode {
     if (this.parent == null) {
       return this.state.toString();
     }
-    return this.parent.getSolution() + this.state.toString();
+    return this.parent.getSolution() + this.generationRule.toString() + this.state.toString();
   }
 
   @Override
@@ -80,5 +83,9 @@ public class GPSNode {
   @Override
   public int hashCode() {
     return state.hashCode();
+  }
+
+  public long getDepth() {
+    return depth;
   }
 }

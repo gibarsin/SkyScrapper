@@ -3,7 +3,7 @@ package ar.edu.itba.sia.game;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
-import ar.edu.itba.sia.gps.api.H;
+import ar.edu.itba.sia.gps.api.Heuristic;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,12 +13,12 @@ public class SkyscraperProblem implements GPSProblem {
 
   private final SkyscraperState initialState;
   private final List<GPSRule> rules;
-  private final List<H> heuristics;
+  private final List<Heuristic> heuristics;
   private final boolean admissibleHeuristics;
   private final BoardValidator boardValidator;
 
   public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules,
-      final List<H> heuristics, final boolean admissibleHeuristics,
+      final List<Heuristic> heuristics, final boolean admissibleHeuristics,
       final BoardValidator boardValidator) {
     this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
     this.rules = Objects.requireNonNull(rules);
@@ -51,7 +51,7 @@ public class SkyscraperProblem implements GPSProblem {
   }
 
   private Integer maxH(final GPSState state) {
-    final Optional<H> maxH = heuristics.stream().max((h1, h2) -> {
+    final Optional<Heuristic> maxH = heuristics.stream().max((h1, h2) -> {
       final int h1Value = h1.getValue(state);
       final int h2Value = h2.getValue(state);
       if (h1Value == Integer.MAX_VALUE) {
@@ -70,7 +70,7 @@ public class SkyscraperProblem implements GPSProblem {
   }
 
   private Integer minH(final GPSState state) {
-    final Optional<H> minH = heuristics.stream().min((h1, h2) -> {
+    final Optional<Heuristic> minH = heuristics.stream().min((h1, h2) -> {
       final int h1Value = h1.getValue(state);
       final int h2Value = h2.getValue(state);
       return Integer.min(h1Value, h2Value);

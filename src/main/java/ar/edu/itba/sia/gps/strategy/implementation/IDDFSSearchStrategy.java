@@ -16,14 +16,20 @@ public class IDDFSSearchStrategy implements SearchStrategyInterface {
   @Override
   public GPSSolutionNode findSolution(final GPSProblem problem) {
     long currentMaxDepth = 0;
-    while(true) {
+    long previousMaxDepth = currentMaxDepth - 1;
+    long maxReachedDepth = previousMaxDepth; // for valid initial conditions
+    // while the previous maxReachedDepth is the previousMaxDepth
+    while(maxReachedDepth == previousMaxDepth) {
       dfsSearchStrategy = new DFSSearchStrategy(currentMaxDepth);
       final GPSSolutionNode solutionNode = dfsSearchStrategy.findSolution(problem);
       if (solutionNode != null && solutionNode.getSolutionNode() != null) { // we truly find a solution
         return solutionNode;
       }
+      maxReachedDepth = dfsSearchStrategy.getMaxReachedDepth();
+      previousMaxDepth = currentMaxDepth;
       currentMaxDepth ++;
     }
+    return new GPSSolutionNode(null, "", getExplosionCounter(), -1);
   }
 
   @Override
