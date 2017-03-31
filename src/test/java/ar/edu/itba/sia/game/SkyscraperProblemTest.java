@@ -30,7 +30,7 @@ public class SkyscraperProblemTest {
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
         new SkyscraperProblem(board, Main.getRules(board.getSize()),
-            new LinkedList<>(), boardValidator);
+            new LinkedList<>(), true, boardValidator);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));
   }
@@ -47,7 +47,7 @@ public class SkyscraperProblemTest {
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
         new SkyscraperProblem(board, Main.getRules(board.getSize()),
-            new LinkedList<>(), boardValidator);
+            new LinkedList<>(), true, boardValidator);
 
     Assert.assertTrue(problem.isGoal(problem.getInitState()));
   }
@@ -65,7 +65,7 @@ public class SkyscraperProblemTest {
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final SkyscraperProblem problem =
         new SkyscraperProblem(board, Main.getRules(board.getSize()),
-            new LinkedList<>(), boardValidator);
+            new LinkedList<>(), true, boardValidator);
 
     Assert.assertFalse(problem.isGoal(problem.getInitState()));
   }

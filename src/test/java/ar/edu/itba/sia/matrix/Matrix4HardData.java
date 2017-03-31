@@ -28,7 +28,7 @@ public abstract class Matrix4HardData {
 
   private final GPSProblem problem = new SkyscraperProblem(
       new SkyscraperBoardImpl(getMatrix(), visibility),
-      Main.getRules(SIZE), heuristics, boardValidator
+      Main.getRules(SIZE), heuristics, true, boardValidator
   );
 
   private static final SkyscraperState solvedState = new SkyscraperState(

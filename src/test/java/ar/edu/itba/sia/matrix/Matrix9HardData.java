@@ -39,7 +39,7 @@ public class Matrix9HardData {
           {1, 0, 0, 0, 0, 8, 0, 2, 4},
           {0, 5, 0, 0, 0, 0, 0, 0, 3}
       }, visibility),
-      Main.getRules(SIZE), heuristics, boardValidator
+      Main.getRules(SIZE), heuristics, true, boardValidator
   );
 
   private static final SkyscraperState solvedState = new SkyscraperState(

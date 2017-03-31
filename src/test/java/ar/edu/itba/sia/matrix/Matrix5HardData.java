@@ -35,7 +35,7 @@ public class Matrix5HardData {
           {0, 0, 0, 0, 0},
           {0, 0, 0, 0, 0}
       }, visibility),
-      Main.getRules(SIZE), heuristics, boardValidator
+      Main.getRules(SIZE), heuristics, true, boardValidator
   );
 
   private static final SkyscraperState solvedState = new SkyscraperState(

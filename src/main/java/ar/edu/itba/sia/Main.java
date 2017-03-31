@@ -30,6 +30,12 @@ public class Main {
 //        {2, 1, 3, 4},
 //        {3, 4, 1, 2}
 //    };
+//    final int[][] matrix = new int[][]{
+//        {1, 2, 3, 4},
+//        {2, 3, 4, 1},
+//        {3, 4, 1, 2},
+//        {4, 1, 2, 3}
+//    };
     final int[][] matrix = new int[][]{
         {1, 3, 2, 1},
         {4, 2, 4, 3},
@@ -38,17 +44,18 @@ public class Main {
     };
     final Visibility visibility = new ArrayVisibility.Builder(
         matrix.length,
-        new int[]{0, 3, 0, 0},
-        new int[]{2, 0, 0, 0},
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 0, 0, 2}
+        new int[]{1, 2, 2, 3},
+        new int[]{2, 1, 3, 2},
+        new int[]{1, 3, 3, 2},
+        new int[]{4, 2, 1, 2}
     ).build();
 
     final SkyscraperBoard board = new SkyscraperBoardImpl(matrix, visibility);
     final List<GPSRule> rules = getRules(matrix.length);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final List<H> heuristics = initHeuristics(boardValidator);
-    final GPSProblem problem = new SkyscraperProblem(board, rules, heuristics, boardValidator);
+    final GPSProblem problem =
+        new SkyscraperProblem(board, rules, heuristics, true, boardValidator);
     final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
     engine.findSolution();
 

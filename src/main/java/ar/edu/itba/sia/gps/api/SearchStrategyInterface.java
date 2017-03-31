@@ -7,5 +7,9 @@ import java.util.Map;
 import java.util.Queue;
 
 public interface SearchStrategyInterface {
-  GPSSolutionNode findSolution(GPSProblem problem, Deque<GPSNode> openNodes);
+  GPSSolutionNode findSolution(GPSProblem problem);
+
+  Queue<GPSNode> getOpenNodes();
+
+  Map<GPSState,Integer> getBestCostsPerState();
 }

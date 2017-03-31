@@ -12,7 +12,6 @@ import ar.edu.itba.sia.gps.api.GPSState;
 import java.util.Optional;
 
 public class SkyscraperSwapRule implements GPSRule {
-
   private static final int COST = 12;
   private static final String RULE_NAME = "SWAP";
   private final String name;

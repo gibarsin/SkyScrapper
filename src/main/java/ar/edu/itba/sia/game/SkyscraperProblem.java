@@ -14,13 +14,16 @@ public class SkyscraperProblem implements GPSProblem {
   private final SkyscraperState initialState;
   private final List<GPSRule> rules;
   private final List<H> heuristics;
+  private final boolean admissibleHeuristics;
   private final BoardValidator boardValidator;
 
   public SkyscraperProblem(final SkyscraperBoard initialBoard, final List<GPSRule> rules,
-      final List<H> heuristics, final BoardValidator boardValidator) {
+      final List<H> heuristics, final boolean admissibleHeuristics,
+      final BoardValidator boardValidator) {
     this.initialState = new SkyscraperState(Objects.requireNonNull(initialBoard));
     this.rules = Objects.requireNonNull(rules);
     this.heuristics = Objects.requireNonNull(heuristics);
+    this.admissibleHeuristics = admissibleHeuristics;
     this.boardValidator = Objects.requireNonNull(boardValidator);
   }
 
@@ -44,6 +47,10 @@ public class SkyscraperProblem implements GPSProblem {
 
   @Override
   public Integer getHValue(final GPSState state) {
+    return admissibleHeuristics ? maxH(state) : minH(state);
+  }
+
+  private Integer maxH(final GPSState state) {
     final Optional<H> maxH = heuristics.stream().max((h1, h2) -> {
       final int h1Value = h1.getValue(state);
       final int h2Value = h2.getValue(state);
@@ -60,5 +67,15 @@ public class SkyscraperProblem implements GPSProblem {
     });
 
     return maxH.map(h -> h.getValue(state)).orElse(NO_H_VALUE);
+  }
+
+  private Integer minH(final GPSState state) {
+    final Optional<H> minH = heuristics.stream().min((h1, h2) -> {
+      final int h1Value = h1.getValue(state);
+      final int h2Value = h2.getValue(state);
+      return Integer.min(h1Value, h2Value);
+    });
+
+    return minH.map(h -> h.getValue(state)).orElse(NO_H_VALUE);
   }
 }

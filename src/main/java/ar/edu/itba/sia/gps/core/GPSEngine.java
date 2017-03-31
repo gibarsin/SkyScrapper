@@ -18,8 +18,6 @@ import java.util.Queue;
 public class GPSEngine {
   private final GPSProblem problem;
   private final SearchStrategy strategy;
-  // Will always be consumed from the beginning
-  private final Deque<GPSNode> openNodes;
   private final Map<GPSState, Integer> bestCostsPerState;
   private final SearchStrategyInterface searchStrategy;
   private long explosionCounter;
@@ -40,7 +38,6 @@ public class GPSEngine {
     this.problem = problem;
     this.strategy = strategy;
     this.searchStrategy = chooseStrategy(strategy);
-    this.openNodes = new LinkedList<>();
     this.bestCostsPerState = new HashMap<>();
     this.explosionCounter = 0;
     this.finished = false;
@@ -66,7 +63,7 @@ public class GPSEngine {
   }
 
   public void findSolution() {
-    final GPSSolutionNode gpsSolutionNode = searchStrategy.findSolution(problem, openNodes);
+    final GPSSolutionNode gpsSolutionNode = searchStrategy.findSolution(problem);
     solutionNode = gpsSolutionNode.getSolutionNode();
     finished = true;
     failed = solutionNode == null;
@@ -88,11 +85,11 @@ public class GPSEngine {
   // Code added by @apierri
 
   public Queue<GPSNode> getOpen() {
-    return openNodes;
+    return searchStrategy.getOpenNodes();
   }
 
   public Map<GPSState, Integer> getBestCosts() {
-    return new HashMap<>(bestCostsPerState);
+    return searchStrategy.getBestCostsPerState();
   }
 
   public GPSProblem getProblem() {
