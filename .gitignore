@@ -154,3 +154,4 @@ nbdist/
 # Own rules
 .idea/
 *.iml
+logs/

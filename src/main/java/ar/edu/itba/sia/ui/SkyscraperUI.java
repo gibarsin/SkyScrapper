@@ -1,29 +1,13 @@
 package ar.edu.itba.sia.ui;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
-import javafx.stage.Stage;
+import ar.edu.itba.sia.gps.core.GPSNode;
 
-public class SkyscraperUI extends Application {
-  private static final int BOARD_SIZE = 4; // TODO Remove, for testing-purposes only
+public interface SkyscraperUI {
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    setUserAgentStylesheet(STYLESHEET_MODENA);
-    primaryStage.setTitle("Skyscraper");
-    primaryStage.setResizable(true);
-    primaryStage.centerOnScreen();
-    primaryStage.setOnCloseRequest(event -> Platform.exit());
-
-    ScrollPane primaryPane = new ScrollPane();
-    SkyscraperBoardPane skyscraperBoardPane = new SkyscraperBoardPane(BOARD_SIZE);
-    primaryPane.setContent(skyscraperBoardPane);
-
-    Scene primaryScene = new Scene(primaryPane);
-    primaryStage.setScene(primaryScene);
-
-    primaryStage.show();
-  }
+  /**
+   * Prints the path from the root node to the given goal node
+   * @param node The goal node
+   * @param explosionCounter How many nodes were exploded to reach the goal node
+   */
+  void printSolution(GPSNode node, long explosionCounter);
 }

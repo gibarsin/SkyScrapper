@@ -60,14 +60,14 @@ public class MainTest {
 //    }
 //  }
 
-//  @Test
-//  public void testIDDFS() throws Exception {
-//    if (method.equals("PUT")) {
-//      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
-//      engine.findSolution();
-//      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
-//    }
-//  }
+  @Test
+  public void testIDDFS() throws Exception {
+    if (method.equals("PUT")) {
+      final GPSEngine engine = new GPSEngine(problem, SearchStrategy.IDDFS);
+      engine.findSolution();
+      Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+    }
+  }
 
   @Test
   public void testGREEDY() throws Exception {
