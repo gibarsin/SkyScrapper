@@ -1,5 +1,9 @@
 package ar.edu.itba.sia.matrix;
 
+import ar.edu.itba.sia.game.Point;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Matrix4HardDataPut extends Matrix4HardData {
   private static final String METHOD = "PUT";
 
@@ -18,4 +22,8 @@ public class Matrix4HardDataPut extends Matrix4HardData {
     };
   }
 
+  @Override
+  protected List<Point> getFixedCells() {
+    return new LinkedList<>();
+  }
 }

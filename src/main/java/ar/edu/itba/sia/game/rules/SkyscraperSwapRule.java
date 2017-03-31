@@ -43,7 +43,7 @@ public class SkyscraperSwapRule implements GPSRule {
   public Optional<GPSState> evalRule(final GPSState state) {
     final SkyscraperBoard board = ((SkyscraperState) state).getBoard();
 
-    if (!board.isFull()) {
+    if (!board.isFull() || !board.isValidSwap(row1, col1, row2, col2)) {
       return Optional.empty();
     }
 

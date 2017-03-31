@@ -4,6 +4,7 @@ import ar.edu.itba.sia.Main;
 import ar.edu.itba.sia.game.ArrayVisibility;
 import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.BoardValidatorImpl;
+import ar.edu.itba.sia.game.Point;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.SkyscraperState;
@@ -27,7 +28,7 @@ public abstract class Matrix4HardData {
   private static final List<H> heuristics = Main.initHeuristics(boardValidator);
 
   private final GPSProblem problem = new SkyscraperProblem(
-      new SkyscraperBoardImpl(getMatrix(), visibility),
+      new SkyscraperBoardImpl(getMatrix(), getFixedCells(), visibility),
       Main.getRules(SIZE), heuristics, true, boardValidator
   );
 
@@ -44,6 +45,8 @@ public abstract class Matrix4HardData {
   protected abstract String getMethod();
 
   protected abstract int[][] getMatrix();
+
+  protected abstract List<Point> getFixedCells();
 
   public Object[] getData() {
     return data;

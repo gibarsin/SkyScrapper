@@ -1,5 +1,9 @@
 package ar.edu.itba.sia.matrix;
 
+import ar.edu.itba.sia.game.Point;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Matrix4HardDataSwap extends Matrix4HardData {
   private static final String METHOD = "SWAP";
 
@@ -16,5 +20,13 @@ public class Matrix4HardDataSwap extends Matrix4HardData {
         {2, 3, 2, 4},
         {3, 2, 4, 1}
     };
+  }
+
+  @Override
+  protected List<Point> getFixedCells() {
+    final List<Point> fixedCells = new LinkedList<>();
+    fixedCells.add(new Point(0, 3));
+    fixedCells.add(new Point(1, 0));
+    return fixedCells;
   }
 }
