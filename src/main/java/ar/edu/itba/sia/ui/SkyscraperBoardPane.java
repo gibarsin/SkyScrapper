@@ -22,6 +22,7 @@ public class SkyscraperBoardPane extends GridPane {
   private static final int TILE_SIZE = 30;
   private static final Paint TILE_BG_PAINT = Color.WHITE;
   private static final Paint TILE_FG_PAINT = Color.BLACK;
+  private static final Paint TILE_CH_PAINT = Color.ORANGERED;
 
   private final int size;
 
@@ -55,8 +56,7 @@ public class SkyscraperBoardPane extends GridPane {
     }
 
     this.display(board);
-
-    created = true;
+    this.created = true;
   }
 
   private static void changePaneValue(final Pane pane, final int value) {
@@ -110,7 +110,7 @@ public class SkyscraperBoardPane extends GridPane {
     final Text text = (Text) pane.getChildren().get(1);
 
     if (created && !text.getText().equals(String.valueOf(value))) {
-      rectangle.setFill(Color.ORANGERED);
+      rectangle.setFill(TILE_CH_PAINT);
     } else {
       rectangle.setFill(TILE_BG_PAINT);
     }

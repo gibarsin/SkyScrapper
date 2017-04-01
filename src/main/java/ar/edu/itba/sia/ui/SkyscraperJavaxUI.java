@@ -37,7 +37,7 @@ public class SkyscraperJavaxUI extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(final Stage primaryStage) throws Exception {
     setUserAgentStylesheet(STYLESHEET_MODENA);
     primaryStage.setTitle("Skyscraper");
     primaryStage.setResizable(true);
