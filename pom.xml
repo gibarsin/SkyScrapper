@@ -25,6 +25,9 @@
     <org.slf4j.version>1.7.21</org.slf4j.version>
     <ch.qos.logback.version>1.1.7</ch.qos.logback.version>
     <org.logback.extensions.version>0.1.4</org.logback.extensions.version>
+    <com.github.MatiasComercio.GeneralProblemSolver.version>
+      c2cebae5ecd91a0bd4764003f75a1224f2c8802c
+    </com.github.MatiasComercio.GeneralProblemSolver.version>
   </properties>
 
   <repositories>
@@ -102,7 +105,7 @@
     <dependency>
       <groupId>com.github.MatiasComercio</groupId>
       <artifactId>GeneralProblemSolver</artifactId>
-      <version>c2cebae5ecd91a0bd4764003f75a1224f2c8802c</version>
+      <version>${com.github.MatiasComercio.GeneralProblemSolver.version}</version>
     </dependency>
 
     <!--Testing -->
