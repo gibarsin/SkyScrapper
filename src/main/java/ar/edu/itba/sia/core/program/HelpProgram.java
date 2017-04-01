@@ -22,7 +22,8 @@ public class HelpProgram implements MainProgram {
           "     - " + HEURISTIC.getName() + ": OPTIONAL: only available for 'swap' method. \n"+
           "       List of all the desired heuristics to be applied (no matter if they are admissible or not).\n" +
           "       Possible values: \n" +
-          "       - h1: ideal amount of swaps heuristic (admissible)\n";
+          "       - h1: ideal amount of swaps heuristic (admissible)\n" +
+          "       - h2: statistical amount of swaps heuristic (inadmissible)\n";
 
   @Override
   public void run(final String[] args) {
