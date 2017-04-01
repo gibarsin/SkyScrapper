@@ -16,7 +16,7 @@ public class Matrix6HardDataPut extends Matrix6HardData {
   protected int[][] getMatrix() {
     return new int[][]{
         {0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0},
+        {0, 0, 3, 0, 0, 2},
         {0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0},
