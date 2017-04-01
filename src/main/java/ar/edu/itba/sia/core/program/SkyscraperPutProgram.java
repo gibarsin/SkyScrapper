@@ -14,7 +14,7 @@ import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
-import ar.edu.itba.sia.gps.api.Heuristic;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import java.util.LinkedList;
 import java.util.List;

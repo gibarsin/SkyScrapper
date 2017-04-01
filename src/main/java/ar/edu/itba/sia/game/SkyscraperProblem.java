@@ -3,7 +3,7 @@ package ar.edu.itba.sia.game;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
-import ar.edu.itba.sia.gps.api.Heuristic;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

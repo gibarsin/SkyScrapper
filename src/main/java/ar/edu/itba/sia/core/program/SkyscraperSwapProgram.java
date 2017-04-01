@@ -6,7 +6,6 @@ import static ar.edu.itba.sia.core.InputParam.SEARCH_STRATEGY;
 import static ar.edu.itba.sia.core.helper.IOService.ExitStatus.BAD_ARGUMENT;
 
 import ar.edu.itba.sia.core.helper.DataFileContent;
-import ar.edu.itba.sia.core.helper.FullMatrix;
 import ar.edu.itba.sia.core.helper.IOService;
 import ar.edu.itba.sia.core.helper.InputSerializerHelper;
 import ar.edu.itba.sia.game.BoardValidator;
@@ -18,12 +17,11 @@ import ar.edu.itba.sia.game.heuristic.IdealAmountOfSwapsHeuristic;
 import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
-import ar.edu.itba.sia.gps.api.Heuristic;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class SkyscraperSwapProgram extends SkyscraperProgram {
   private final GPSEngine engine;

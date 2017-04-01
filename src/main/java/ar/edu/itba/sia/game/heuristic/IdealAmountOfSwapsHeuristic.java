@@ -4,7 +4,6 @@ import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.gps.api.GPSState;
-import ar.edu.itba.sia.gps.api.Heuristic;
 
 public class IdealAmountOfSwapsHeuristic implements Heuristic {
   private final BoardValidator boardValidator;

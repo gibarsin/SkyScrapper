@@ -10,7 +10,7 @@ import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.game.Visibility;
 import ar.edu.itba.sia.gps.api.GPSProblem;
-import ar.edu.itba.sia.gps.api.Heuristic;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import java.util.List;
 
 public abstract class Matrix4HardData {

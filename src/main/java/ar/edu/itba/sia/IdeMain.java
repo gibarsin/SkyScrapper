@@ -13,7 +13,7 @@ import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
 import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
-import ar.edu.itba.sia.gps.api.Heuristic;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
