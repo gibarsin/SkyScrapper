@@ -27,6 +27,13 @@
     <org.logback.extensions.version>0.1.4</org.logback.extensions.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -92,6 +99,12 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.github.MatiasComercio</groupId>
+      <artifactId>GeneralProblemSolver</artifactId>
+      <version>c2cebae5ecd91a0bd4764003f75a1224f2c8802c</version>
+    </dependency>
+
     <!--Testing -->
     <dependency>
       <groupId>junit</groupId>
