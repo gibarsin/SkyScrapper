@@ -1,13 +1,40 @@
 package ar.edu.itba.sia.ui;
 
+import ar.edu.itba.sia.game.SkyscraperState;
+import ar.edu.itba.sia.gps.core.GPSNode;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class SkyscraperJavaxUI extends Application {
-  private static final int BOARD_SIZE = 4; // TODO Remove, for testing-purposes only
+
+  private static Map<GPSNode, GPSNode> childes;
+  private static GPSNode currentNode;
+
+  public static void display(final GPSNode finalNode, final long explodedNodes) {
+    Objects.requireNonNull(finalNode);
+
+    SkyscraperJavaxUI.childes = new HashMap<>();
+    SkyscraperJavaxUI.currentNode = finalNode;
+
+    GPSNode last = null;
+    GPSNode curr = finalNode;
+    SkyscraperJavaxUI.childes.put(curr, last);
+    while (curr != null) {
+      last = curr;
+      curr = curr.getParent();
+      SkyscraperJavaxUI.childes.put(curr, last);
+    }
+
+    launch();
+  }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -17,13 +44,53 @@ public class SkyscraperJavaxUI extends Application {
     primaryStage.centerOnScreen();
     primaryStage.setOnCloseRequest(event -> Platform.exit());
 
-    ScrollPane primaryPane = new ScrollPane();
-    SkyscraperBoardPane skyscraperBoardPane = new SkyscraperBoardPane(BOARD_SIZE);
-    primaryPane.setContent(skyscraperBoardPane);
+    final ScrollPane primaryPane = new ScrollPane();
+    final HBox secondaryPane = new HBox();
+    final SkyscraperState lastState = (SkyscraperState) currentNode.getState();
+    final SkyscraperBoardPane boardPane = new SkyscraperBoardPane(lastState.getBoard());
+    final Button buttonLeft = new Button();
+    buttonLeft.setText("<");
+    buttonLeft.setMaxHeight(Double.MAX_VALUE);
+    final Button buttonRight = new Button();
+    buttonRight.setText(">");
+    buttonRight.setMaxHeight(Double.MAX_VALUE);
+    secondaryPane.getChildren().addAll(buttonLeft, boardPane, buttonRight);
 
-    Scene primaryScene = new Scene(primaryPane);
+    buttonLeft.setOnAction(event -> {
+      final GPSNode auxNode = currentNode.getParent();
+
+      if (auxNode != null) {
+        currentNode = auxNode;
+
+        SkyscraperState state = (SkyscraperState) currentNode.getState();
+        boardPane.display(state.getBoard());
+      }
+    });
+    buttonRight.setOnAction(event -> {
+      final GPSNode auxNode = childes.get(currentNode);
+
+      if (auxNode != null) {
+        currentNode = auxNode;
+
+        SkyscraperState state = (SkyscraperState) currentNode.getState();
+        boardPane.display(state.getBoard());
+      }
+    });
+
+    primaryPane.setContent(secondaryPane);
+    final Scene primaryScene = new Scene(primaryPane);
+    primaryPane.setOnKeyPressed(event -> {
+      switch (event.getCode()) {
+        case LEFT:
+          buttonLeft.getOnAction().handle(null);
+          break;
+        case RIGHT:
+          buttonRight.getOnAction().handle(null);
+          break;
+      }
+    });
+
     primaryStage.setScene(primaryScene);
-
     primaryStage.show();
   }
 }

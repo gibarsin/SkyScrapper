@@ -8,15 +8,11 @@ import ar.edu.itba.sia.game.Point;
 import ar.edu.itba.sia.game.Visibility;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -67,18 +63,20 @@ public class InputSerializerHelper {
           fullMatrix.fix(i, j, matrix[i][j]);
         }
       }
+      numScanner.close();
     }
 
     // skip empty file line added for clarity purposes
     streamLines.next();
 
     // scan visibility matrix
-    final int[][] visibilityMatrix = new int[n][n];
+    final int[][] visibilityMatrix = new int[VISIBILITY_LINES][n];
     for (int i = 0 ; i < VISIBILITY_LINES ; i++) {
       final Scanner numScanner = new Scanner(streamLines.next());
       for (int j = 0 ; j < n ; j++) {
         visibilityMatrix[i][j] = numScanner.nextInt();
       }
+      numScanner.close();
     }
     final Visibility visibility = new ArrayVisibility.Builder(
         n,
