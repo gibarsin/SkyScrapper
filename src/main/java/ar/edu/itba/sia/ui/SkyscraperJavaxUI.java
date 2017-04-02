@@ -54,6 +54,7 @@ public class SkyscraperJavaxUI extends Application {
     final Button buttonRight = new Button();
     buttonRight.setText(">");
     buttonRight.setMaxHeight(Double.MAX_VALUE);
+    buttonRight.setDisable(true);
     secondaryPane.getChildren().addAll(buttonLeft, boardPane, buttonRight);
 
     buttonLeft.setOnAction(event -> {
@@ -61,6 +62,11 @@ public class SkyscraperJavaxUI extends Application {
 
       if (auxNode != null) {
         currentNode = auxNode;
+
+        if (currentNode.getParent() == null) {
+          buttonLeft.setDisable(true);
+        }
+        buttonRight.setDisable(false);
 
         SkyscraperState state = (SkyscraperState) currentNode.getState();
         boardPane.display(state.getBoard());
@@ -71,6 +77,11 @@ public class SkyscraperJavaxUI extends Application {
 
       if (auxNode != null) {
         currentNode = auxNode;
+
+        if (childes.get(currentNode) == null) {
+          buttonRight.setDisable(true);
+        }
+        buttonLeft.setDisable(false);
 
         SkyscraperState state = (SkyscraperState) currentNode.getState();
         boardPane.display(state.getBoard());
