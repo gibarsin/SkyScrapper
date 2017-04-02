@@ -4,25 +4,36 @@ import ar.edu.itba.sia.game.SkyscraperState;
 import ar.edu.itba.sia.gps.core.GPSNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SkyscraperApplication extends Application {
 
+  private static final int PADDING = 10;
+
   private static Map<GPSNode, GPSNode> childes;
   private static GPSNode currentNode;
+  private static long explodedNodes;
+  private static int cost;
 
   public static void display(final GPSNode finalNode, final long explodedNodes) {
-    Objects.requireNonNull(finalNode);
+    if (finalNode == null) {
+      launch();
+    }
 
     SkyscraperApplication.childes = new HashMap<>();
     SkyscraperApplication.currentNode = finalNode;
+    SkyscraperApplication.explodedNodes = explodedNodes;
+    SkyscraperApplication.cost = finalNode.getCost();
 
     GPSNode last = null;
     GPSNode curr = finalNode;
@@ -36,16 +47,17 @@ public class SkyscraperApplication extends Application {
     launch();
   }
 
-  @Override
-  public void start(final Stage primaryStage) throws Exception {
-    setUserAgentStylesheet(STYLESHEET_MODENA);
-    primaryStage.setTitle("Skyscraper");
-    primaryStage.setResizable(true);
-    primaryStage.centerOnScreen();
-    primaryStage.setOnCloseRequest(event -> Platform.exit());
+  private static Scene getPrimaryScene() {
+    if (currentNode != null) {
+      return getSolutionFoundPrimaryScene();
+    } else {
+      return getSolutionNotFoundPrimaryScene();
+    }
+  }
 
+  private static Scene getSolutionFoundPrimaryScene() {
     final ScrollPane primaryPane = new ScrollPane();
-    final HBox secondaryPane = new HBox();
+    final HBox hBox = new HBox(10);
     final SkyscraperState lastState = (SkyscraperState) currentNode.getState();
     final SkyscraperBoardPane boardPane = new SkyscraperBoardPane(lastState.getBoard());
     final Button buttonLeft = new Button();
@@ -55,7 +67,7 @@ public class SkyscraperApplication extends Application {
     buttonRight.setText(">");
     buttonRight.setMaxHeight(Double.MAX_VALUE);
     buttonRight.setDisable(true);
-    secondaryPane.getChildren().addAll(buttonLeft, boardPane, buttonRight);
+    hBox.getChildren().addAll(buttonLeft, boardPane, buttonRight);
 
     buttonLeft.setOnAction(event -> {
       final GPSNode auxNode = currentNode.getParent();
@@ -88,7 +100,13 @@ public class SkyscraperApplication extends Application {
       }
     });
 
-    primaryPane.setContent(secondaryPane);
+    Text nodesText = new Text("Exploded nodes: " + explodedNodes);
+    Text costText = new Text("Cost: " + cost);
+    final VBox vBox = new VBox(PADDING, hBox, nodesText, costText);
+    vBox.setAlignment(Pos.CENTER);
+    vBox.setPadding(new Insets(PADDING));
+    primaryPane.setContent(vBox);
+
     final Scene primaryScene = new Scene(primaryPane);
     primaryPane.setOnKeyPressed(event -> {
       switch (event.getCode()) {
@@ -101,7 +119,27 @@ public class SkyscraperApplication extends Application {
       }
     });
 
-    primaryStage.setScene(primaryScene);
+    return primaryScene;
+  }
+
+  private static Scene getSolutionNotFoundPrimaryScene() {
+    final Text text = new Text("Solution not found");
+    final VBox primaryPane = new VBox(PADDING, text);
+    primaryPane.setAlignment(Pos.CENTER);
+    primaryPane.setPadding(new Insets(PADDING));
+
+    final Scene primaryScene = new Scene(primaryPane);
+    return primaryScene;
+  }
+
+  @Override
+  public void start(final Stage primaryStage) throws Exception {
+    setUserAgentStylesheet(STYLESHEET_MODENA);
+    primaryStage.setTitle("Skyscraper");
+    primaryStage.setResizable(true);
+    primaryStage.centerOnScreen();
+    primaryStage.setOnCloseRequest(event -> Platform.exit());
+    primaryStage.setScene(getPrimaryScene());
     primaryStage.show();
   }
 }
