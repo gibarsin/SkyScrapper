@@ -28,6 +28,7 @@ public class SkyscraperApplication extends Application {
   public static void display(final GPSNode finalNode, final long explodedNodes) {
     if (finalNode == null) {
       launch();
+      return;
     }
 
     SkyscraperApplication.childes = new HashMap<>();
