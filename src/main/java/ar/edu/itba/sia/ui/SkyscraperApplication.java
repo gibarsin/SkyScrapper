@@ -13,7 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class SkyscraperJavaxUI extends Application {
+public class SkyscraperApplication extends Application {
 
   private static Map<GPSNode, GPSNode> childes;
   private static GPSNode currentNode;
@@ -21,16 +21,16 @@ public class SkyscraperJavaxUI extends Application {
   public static void display(final GPSNode finalNode, final long explodedNodes) {
     Objects.requireNonNull(finalNode);
 
-    SkyscraperJavaxUI.childes = new HashMap<>();
-    SkyscraperJavaxUI.currentNode = finalNode;
+    SkyscraperApplication.childes = new HashMap<>();
+    SkyscraperApplication.currentNode = finalNode;
 
     GPSNode last = null;
     GPSNode curr = finalNode;
-    SkyscraperJavaxUI.childes.put(curr, last);
+    SkyscraperApplication.childes.put(curr, last);
     while (curr != null) {
       last = curr;
       curr = curr.getParent();
-      SkyscraperJavaxUI.childes.put(curr, last);
+      SkyscraperApplication.childes.put(curr, last);
     }
 
     launch();
