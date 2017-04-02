@@ -14,6 +14,7 @@ import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.heuristic.IdealAmountOfSwapsHeuristic;
+import ar.edu.itba.sia.game.heuristic.StatisticalAmountOfSwapsHeuristic;
 import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
@@ -76,6 +77,9 @@ public class SkyscraperSwapProgram extends SkyscraperProgram {
     switch (heuristic.toLowerCase()) {
       case "h1":
         heuristics.add(new IdealAmountOfSwapsHeuristic(boardValidator));
+        break;
+      case "h2":
+        heuristics.add(new StatisticalAmountOfSwapsHeuristic(boardValidator));
         break;
       default:
         IOService.exit(BAD_ARGUMENT, HEURISTIC.getName());

@@ -92,5 +92,4 @@ public abstract class SSOneTimeCycle implements SearchStrategyInterface {
   private void updateBestCostState(GPSNode node) {
     this.bestCostsPerState.put(node.getState(), node.getCost());
   }
-
 }
