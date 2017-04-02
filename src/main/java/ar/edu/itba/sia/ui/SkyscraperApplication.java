@@ -22,10 +22,14 @@ public class SkyscraperApplication extends Application {
 
   private static Map<GPSNode, GPSNode> childes;
   private static GPSNode currentNode;
+  private static long openNodes;
   private static long explodedNodes;
+  private static long time;
   private static int cost;
+  private static long depth;
 
-  public static void display(final GPSNode finalNode, final long explodedNodes) {
+  public static void display(final GPSNode finalNode, final int openNodes,
+      final long explodedNodes, final long time) {
     if (finalNode == null) {
       launch();
       return;
@@ -33,8 +37,11 @@ public class SkyscraperApplication extends Application {
 
     SkyscraperApplication.childes = new HashMap<>();
     SkyscraperApplication.currentNode = finalNode;
+    SkyscraperApplication.openNodes = openNodes;
     SkyscraperApplication.explodedNodes = explodedNodes;
+    SkyscraperApplication.time = time;
     SkyscraperApplication.cost = finalNode.getCost();
+    SkyscraperApplication.depth = finalNode.getDepth();
 
     GPSNode last = null;
     GPSNode curr = finalNode;
@@ -101,9 +108,13 @@ public class SkyscraperApplication extends Application {
       }
     });
 
-    Text nodesText = new Text("Exploded nodes: " + explodedNodes);
+    Text explodedNodesText = new Text("Exploded nodes: " + explodedNodes);
+    Text openNodesText = new Text("Open nodes: " + openNodes);
     Text costText = new Text("Cost: " + cost);
-    final VBox vBox = new VBox(PADDING, hBox, nodesText, costText);
+    Text depthText = new Text("Depth: " + depth);
+    Text timeText = new Text("Time: " + time);
+    final VBox vBox = new VBox(PADDING, hBox, explodedNodesText, openNodesText, costText, depthText,
+        timeText);
     vBox.setAlignment(Pos.CENTER);
     vBox.setPadding(new Insets(PADDING));
     primaryPane.setContent(vBox);

@@ -8,12 +8,12 @@ import ar.edu.itba.sia.game.SkyscraperBoard;
 import ar.edu.itba.sia.game.SkyscraperBoardImpl;
 import ar.edu.itba.sia.game.SkyscraperProblem;
 import ar.edu.itba.sia.game.Visibility;
+import ar.edu.itba.sia.game.heuristic.Heuristic;
 import ar.edu.itba.sia.game.heuristic.IdealAmountOfSwapsHeuristic;
 import ar.edu.itba.sia.game.rules.SkyscraperPutRule;
 import ar.edu.itba.sia.game.rules.SkyscraperSwapRule;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
-import ar.edu.itba.sia.game.heuristic.Heuristic;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class IdeMain {
+
   public static void main(String[] args) {
     initProblem();
   }
@@ -63,7 +64,12 @@ public class IdeMain {
     final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
     engine.findSolution();
     final SkyscraperUI ui = new SkyscraperConsoleUI();
-    ui.printSolution(engine.getSolutionNode(), engine.getExplosionCounter());
+    ui.printSolution(
+        engine.getSolutionNode(),
+        engine.getOpen().size(),
+        engine.getExplosionCounter(),
+        0
+    );
 
 //    Application.launch(SkyscraperJavaxUI.class, args);
   }
@@ -87,7 +93,7 @@ public class IdeMain {
     for (int row1 = 0; row1 < size; row1++) {
       for (int col1 = 0; col1 < size; col1++) {
         for (int row2 = row1; row2 < size; row2++) {
-          for (int col2 = col1 ; col2 < size; col2++) {
+          for (int col2 = col1; col2 < size; col2++) {
             if (row1 != row2 || col1 != col2) {
               rules.add(new SkyscraperSwapRule(row1, col1, row2, col2));
             }
