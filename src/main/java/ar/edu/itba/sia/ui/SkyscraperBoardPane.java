@@ -109,7 +109,7 @@ public class SkyscraperBoardPane extends GridPane {
     final Rectangle rectangle = (Rectangle) pane.getChildren().get(0);
     final Text text = (Text) pane.getChildren().get(1);
 
-    if (created && !text.getText().equals(String.valueOf(value))) {
+    if (created && !text.getText().equals(value != 0 ? String.valueOf(value) : "")) {
       rectangle.setFill(TILE_CH_PAINT);
     } else {
       rectangle.setFill(TILE_BG_PAINT);
