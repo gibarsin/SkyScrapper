@@ -12,9 +12,11 @@ import java.util.Queue;
 
 public class IDDFSSearchStrategy implements SearchStrategyInterface {
   private DFSSearchStrategy dfsSearchStrategy;
+  private long explosionCounter;
 
   @Override
   public GPSSolutionNode findSolution(final GPSProblem problem) {
+    explosionCounter = 0;
     long currentMaxDepth = 0;
     long previousMaxDepth = currentMaxDepth - 1;
     long maxReachedDepth = previousMaxDepth; // for valid initial conditions
@@ -22,6 +24,7 @@ public class IDDFSSearchStrategy implements SearchStrategyInterface {
     while(maxReachedDepth == previousMaxDepth) {
       dfsSearchStrategy = new DFSSearchStrategy(currentMaxDepth);
       final GPSSolutionNode solutionNode = dfsSearchStrategy.findSolution(problem);
+      explosionCounter += dfsSearchStrategy.getExplosionCounter();
       if (solutionNode != null && solutionNode.getSolutionNode() != null) { // we truly find a solution
         return solutionNode;
       }
@@ -44,7 +47,7 @@ public class IDDFSSearchStrategy implements SearchStrategyInterface {
 
   @Override
   public long getExplosionCounter() {
-    return dfsSearchStrategy == null ? 0 : dfsSearchStrategy.getExplosionCounter();
+    return explosionCounter;
   }
 
 }
