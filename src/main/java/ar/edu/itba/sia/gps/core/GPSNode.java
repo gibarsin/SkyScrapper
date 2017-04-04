@@ -7,11 +7,17 @@ import java.util.Objects;
 public class GPSNode {
   private final GPSState state;
   private final int cost;
-  private final long depth;
+  private long depth;
   private GPSNode parent;
   private GPSRule generationRule;
   private int f;
   private int h;
+
+  public GPSNode(GPSState state, Integer cost, GPSRule generationRule) {
+    this.state = state;
+    this.cost = cost;
+    this.generationRule = generationRule;
+  }
 
   /**
    * Create a new GPS node
