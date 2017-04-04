@@ -24,11 +24,22 @@ Solve a problem described at the file 'resources/games/mx4_1.dat' with the greed
 
     $ java -jar target/skyscraper.jar solve resources/games/mx4_1.dat greedy put
 
+**We recommend to run 'resources/games/mx4_1.dat' and 'resources/games/mx5_1.dat' as our two favourite candidates
+ to show how our project works. Run them with all the search methods and heuristics.
+ Other used scenarios may be find at the report.**
+
 ## Custom games
 You could easily configure any desired game following the template guide located at `resources/games/template.dat`.
 Then, to solve your created file game, run
 
     $ java -jar target/skyscraper.jar solve <path/to/created/game.dat> <search_strategy> <method> [<heuristic>]
+
+## Documents
+The report (Informe.pdf) and the presentation (Presentacion.pdf & Presentacion.pptx) are located at the `docs` folder.
+
+## Binary
+In the `binaries` folder there is a generated .jar with the latest version of the compiled program.
+However, **strongly** recommend to use the above steps to run the project from scratch.
 
 ## Authors
 This project is written and maintained by
