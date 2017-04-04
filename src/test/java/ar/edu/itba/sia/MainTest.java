@@ -6,13 +6,12 @@ import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.matrix.Matrix4HardDataPut;
 import ar.edu.itba.sia.matrix.Matrix4HardDataSwap;
-import ar.edu.itba.sia.matrix.Matrix5HardDataPut;
-import ar.edu.itba.sia.matrix.Matrix6HardDataPut;
-import ar.edu.itba.sia.matrix.Matrix9HardDataPut;
-import ar.edu.itba.sia.matrix.Matrix9HardDataSwap;
+import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
+import ar.edu.itba.sia.ui.SkyscraperUI;
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -20,6 +19,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class MainTest {
+
+  private static final SkyscraperUI ui = new SkyscraperConsoleUI();
 
   private final String name;
   private final GPSProblem problem;
@@ -39,11 +40,7 @@ public class MainTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(
         new Matrix4HardDataPut().getData(),
-        new Matrix4HardDataSwap().getData(),
-        new Matrix5HardDataPut().getData(),
-        new Matrix6HardDataPut().getData(),
-        new Matrix9HardDataPut().getData(),
-        new Matrix9HardDataSwap().getData()
+        new Matrix4HardDataSwap().getData()
     );
   }
 
@@ -57,6 +54,9 @@ public class MainTest {
     engine.findSolution();
     Assert.assertNotNull(engine.getSolutionNode());
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+
+    ui.printSolution(engine.getSolutionNode(), engine.getOpen().size(),
+        engine.getExplosionCounter(), -1);
   }
 
   @Test
@@ -69,6 +69,9 @@ public class MainTest {
     engine.findSolution();
     Assert.assertNotNull(engine.getSolutionNode());
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+
+    ui.printSolution(engine.getSolutionNode(), engine.getOpen().size(),
+        engine.getExplosionCounter(), -1);
   }
 
   @Test
@@ -81,6 +84,9 @@ public class MainTest {
     engine.findSolution();
     Assert.assertNotNull(engine.getSolutionNode());
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+
+    ui.printSolution(engine.getSolutionNode(), engine.getOpen().size(),
+        engine.getExplosionCounter(), -1);
   }
 
   @Test
@@ -89,13 +95,19 @@ public class MainTest {
     engine.findSolution();
     Assert.assertNotNull(engine.getSolutionNode());
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+
+    ui.printSolution(engine.getSolutionNode(), engine.getOpen().size(),
+        engine.getExplosionCounter(), -1);
   }
 
-  @Test
+  @Ignore("Takes too long") @Test
   public void testASTAR() throws Exception {
     final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
     engine.findSolution();
     Assert.assertNotNull(engine.getSolutionNode());
     Assert.assertTrue(engine.getSolutionNode().getState().equals(solvedState));
+
+    ui.printSolution(engine.getSolutionNode(), engine.getOpen().size(),
+        engine.getExplosionCounter(), -1);
   }
 }

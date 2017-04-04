@@ -1,19 +1,19 @@
 package ar.edu.itba.sia.core.program;
 
-import ar.edu.itba.sia.core.MainProgram;
 import ar.edu.itba.sia.core.InputParam;
+import ar.edu.itba.sia.core.MainProgram;
 import ar.edu.itba.sia.core.helper.IOService;
 import ar.edu.itba.sia.core.helper.IOService.ExitStatus;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
-import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
+import ar.edu.itba.sia.ui.SkyscraperGUI;
 import ar.edu.itba.sia.ui.SkyscraperUI;
 
 public abstract class SkyscraperProgram implements MainProgram {
   private final SkyscraperUI ui;
 
   protected SkyscraperProgram() {
-    this.ui = new SkyscraperConsoleUI();
+    this.ui = new SkyscraperGUI();
   }
 
   protected abstract GPSEngine getEngine();
@@ -31,7 +31,15 @@ public abstract class SkyscraperProgram implements MainProgram {
   @Override
   public void run(final String[] args) {
     final GPSEngine engine = getEngine();
+
+    final long startTime = System.currentTimeMillis();
     engine.findSolution();
-    ui.printSolution(engine.getSolutionNode(), engine.getExplosionCounter());
+    final long endTime = System.currentTimeMillis();
+    ui.printSolution(
+        engine.getSolutionNode(),
+        engine.getOpen().size(),
+        engine.getExplosionCounter(),
+        endTime - startTime
+    );
   }
 }
