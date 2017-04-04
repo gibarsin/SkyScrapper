@@ -11,6 +11,7 @@ public class GPSNode {
   private GPSNode parent;
   private GPSRule generationRule;
   private int f;
+  private int h;
 
   /**
    * Create a new GPS node
@@ -56,6 +57,14 @@ public class GPSNode {
 
   public void setF(final int f) {
     this.f = f;
+  }
+
+  public int getH() {
+    return h;
+  }
+
+  public void setH(final int h) {
+    this.h = h;
   }
 
   @Override

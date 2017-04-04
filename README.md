@@ -11,13 +11,13 @@ Then, run
 ## Execution
 To run the program, from the root folder
 
-    $ java -jar core/target/skyscraper.jar <arguments>
+    $ java -jar target/skyscraper.jar <arguments>
 
 ## Usage
 `help` argument is a highly detailed help menu that show possible usages of the current program.
 So, we highly recommend that for using this jar, you may run
 
-    $ java -jar core/target/skyscraper.jar help
+    $ java -jar target/skyscraper.jar help
 
 ### Usage examples
 Solve a problem described at the file 'resources/games/mx4_1.dat' with the greedy search strategy and put method

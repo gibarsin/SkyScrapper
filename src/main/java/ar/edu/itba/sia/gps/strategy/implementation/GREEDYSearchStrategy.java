@@ -3,6 +3,7 @@ package ar.edu.itba.sia.gps.strategy.implementation;
 import ar.edu.itba.sia.gps.api.GPSState;
 import ar.edu.itba.sia.gps.api.H;
 import ar.edu.itba.sia.gps.core.GPSNode;
+import ar.edu.itba.sia.gps.strategy.RandomOrder;
 import ar.edu.itba.sia.gps.strategy.SSOneTimeCycle;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -24,8 +25,11 @@ public class GREEDYSearchStrategy extends SSOneTimeCycle {
   private void initCurrentNodes() {
     this.currentNodes = new PriorityQueue<>((node1, node2) -> {
       final int h1Value = h.getValue(node1.getState());
+      node1.setH(h1Value);
       final int h2Value = h.getValue(node2.getState());
-      return h2Value - h1Value;
+      node2.setH(h2Value);
+      final int difference = h2Value - h1Value;
+      return difference != 0 ? difference : RandomOrder.randomOrder();
     });
   }
 
