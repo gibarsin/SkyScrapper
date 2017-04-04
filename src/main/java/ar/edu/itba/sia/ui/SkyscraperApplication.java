@@ -52,6 +52,10 @@ public class SkyscraperApplication extends Application {
       SkyscraperApplication.childes.put(curr, last);
     }
 
+    while (currentNode.getParent() != null ) {
+      currentNode = currentNode.getParent();
+    }
+
     launch();
   }
 
@@ -71,10 +75,10 @@ public class SkyscraperApplication extends Application {
     final Button buttonLeft = new Button();
     buttonLeft.setText("<");
     buttonLeft.setMaxHeight(Double.MAX_VALUE);
+    buttonLeft.setDisable(true);
     final Button buttonRight = new Button();
     buttonRight.setText(">");
     buttonRight.setMaxHeight(Double.MAX_VALUE);
-    buttonRight.setDisable(true);
     hBox.getChildren().addAll(buttonLeft, boardPane, buttonRight);
 
     buttonLeft.setOnAction(event -> {
@@ -112,7 +116,7 @@ public class SkyscraperApplication extends Application {
     Text openNodesText = new Text("Open nodes: " + openNodes);
     Text costText = new Text("Cost: " + cost);
     Text depthText = new Text("Depth: " + depth);
-    Text timeText = new Text("Time: " + time);
+    Text timeText = new Text("Elapsed time: " + time + " ms");
     final VBox vBox = new VBox(PADDING, hBox, explodedNodesText, openNodesText, costText, depthText,
         timeText);
     vBox.setAlignment(Pos.CENTER);

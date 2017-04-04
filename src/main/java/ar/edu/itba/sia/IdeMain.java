@@ -17,6 +17,7 @@ import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.core.GPSEngine;
 import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
+import ar.edu.itba.sia.ui.SkyscraperGUI;
 import ar.edu.itba.sia.ui.SkyscraperUI;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -63,12 +64,12 @@ public class IdeMain {
         new SkyscraperProblem(board, rules, heuristics, true, boardValidator);
     final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
     engine.findSolution();
-    final SkyscraperUI ui = new SkyscraperConsoleUI();
+    final SkyscraperUI ui = new SkyscraperGUI();
     ui.printSolution(
         engine.getSolutionNode(),
         engine.getOpen().size(),
         engine.getExplosionCounter(),
-        0
+        -1
     );
 
 //    Application.launch(SkyscraperJavaxUI.class, args);
