@@ -10,16 +10,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Random;
 
 public class GREEDYSearchStrategy extends SSOneTimeCycle {
   private final H h;
-  private final Random rand;
   private final Deque<GPSNode> openNodes;
   private Queue<GPSNode> currentNodes;
 
   public GREEDYSearchStrategy(final H heuristic) {
-    this.rand = new Random();
     this.h = heuristic;
     this.openNodes = new LinkedList<>();
     initCurrentNodes();
