@@ -1,7 +1,6 @@
 package ar.edu.itba.sia.game;
 
-import ar.edu.itba.sia.IdeMain;
-import ar.edu.itba.sia.Main;
+import ar.edu.itba.sia.ui.IdeMain;
 import java.util.LinkedList;
 import org.junit.Assert;
 import org.junit.Test;

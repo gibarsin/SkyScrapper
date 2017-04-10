@@ -1,5 +1,10 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.ui;
 
+import ar.edu.itba.sia.BestHeuristic;
+import ar.edu.itba.sia.Board;
+import ar.edu.itba.sia.BoardParser;
+import ar.edu.itba.sia.MyGameFactory;
+import ar.edu.itba.sia.TrivialHeuristic;
 import ar.edu.itba.sia.game.ArrayVisibility;
 import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.BoardValidatorImpl;
@@ -19,17 +24,18 @@ import ar.edu.itba.sia.gps.strategy.SearchStrategy;
 import ar.edu.itba.sia.ui.SkyscraperConsoleUI;
 import ar.edu.itba.sia.ui.SkyscraperGUI;
 import ar.edu.itba.sia.ui.SkyscraperUI;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class IdeMain {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     initProblem();
   }
 
-  private static void initProblem() {
+  private static void initProblem() throws IOException {
     //    final int[][] originalMatrix = new int[][]{
 //        {4, 3, 2, 1},
 //        {1, 2, 4, 3},
@@ -60,11 +66,14 @@ public class IdeMain {
     final List<GPSRule> rules = getRules(matrix.length);
     final BoardValidator boardValidator = new BoardValidatorImpl(board.getSize());
     final List<Heuristic> heuristics = initHeuristics(boardValidator);
-    final GPSProblem problem =
-        new SkyscraperProblem(board, rules, heuristics, true, boardValidator);
-    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY);
+
+    final Board initialBoard = BoardParser.readBoard("board3.txt");
+    final ar.edu.itba.sia.Heuristic heuristic = new BestHeuristic(initialBoard);
+    final GPSProblem problem = MyGameFactory.getNewProblem(initialBoard, heuristic);
+
+    final GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
     engine.findSolution();
-    final SkyscraperUI ui = new SkyscraperGUI();
+    final SkyscraperUI ui = new SkyscraperConsoleUI();
     ui.printSolution(
         engine.getSolutionNode(),
         engine.getOpen().size(),

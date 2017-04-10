@@ -1,4 +1,4 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.ui;
 
 import static ar.edu.itba.sia.core.InputParam.METHOD;
 

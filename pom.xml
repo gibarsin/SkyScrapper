@@ -13,7 +13,7 @@
 
   <properties>
     <jar.name>skyscraper</jar.name>
-    <mainClass>ar.edu.itba.sia.Main</mainClass>
+    <mainClass>ar.edu.itba.sia.ui.Main</mainClass>
     <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>

@@ -1,6 +1,6 @@
 package ar.edu.itba.sia.matrix;
 
-import ar.edu.itba.sia.IdeMain;
+import ar.edu.itba.sia.ui.IdeMain;
 import ar.edu.itba.sia.game.ArrayVisibility;
 import ar.edu.itba.sia.game.BoardValidator;
 import ar.edu.itba.sia.game.BoardValidatorImpl;
